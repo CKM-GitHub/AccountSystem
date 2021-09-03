@@ -23,70 +23,6 @@ namespace Account
         string accAdmin = ConfigurationManager.AppSettings["AccountAdmin"].ToString();
         string attachFolderPath = ConfigurationManager.AppSettings["attachFolderPath"].ToString();
         string accID = ""; string canEdit = "0", canDel = "0";
-        public int ctrlCnt
-        {
-            get
-            {
-                if (ViewState["ctrlCnt"] == null)
-                {
-                    return 0;
-                }
-                else
-                {
-                    return int.Parse(ViewState["ctrlCnt"].ToString());
-                }
-            }
-
-        }
-
-        public DataTable dtGdvSavedFiles
-        {
-            get
-            {
-                if (ViewState["dtGdvSavedFiles"] == null)
-                {
-                    DataTable dt = new DataTable();
-                    return dt;
-                }
-                else
-                {
-                    return ViewState["dtGdvSavedFiles"] as DataTable;
-                }
-            }
-            set
-            {
-                ViewState["dtGdvSavedFiles"] = value;
-            }
-        }
-        public int accountID
-        {
-            set
-            {
-                ViewState["accountID"] = value;
-            }
-            get
-            {
-                if (ViewState["accountID"] != null)
-                {
-                    return (int)ViewState["accountID"];
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-        }
-        public int search_no
-        {
-            set { ViewState["search_no"] = value; }
-            get
-            {
-                if (ViewState["search_no"] != null)
-                { return (int)ViewState["search_no"]; }
-                else { return 0; }
-            }
-        }
-
         public string cashUnit
         {
             set
@@ -98,25 +34,6 @@ namespace Account
                 if (ViewState["cashUnit"] != null)
                 {
                     return (string)ViewState["cashUnit"];
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
-
-        public string updateAmt
-        {
-            set
-            {
-                ViewState["updateAmt"] = value;
-            }
-            get
-            {
-                if (ViewState["updateAmt"] != null)
-                {
-                    return (string)ViewState["updateAmt"];
                 }
                 else
                 {
@@ -144,62 +61,6 @@ namespace Account
             }
         }
 
-        public string editLogStr
-        {
-            set
-            {
-                ViewState["editLogStr"] = value;
-            }
-            get
-            {
-                if (ViewState["editLogStr"] != null)
-                {
-                    return (string)ViewState["editLogStr"];
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
-
-        public string updLogStr
-        {
-            set
-            {
-                ViewState["updLogStr"] = value;
-            }
-            get
-            {
-                if (ViewState["updLogStr"] != null)
-                {
-                    return (string)ViewState["updLogStr"];
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
-
-        public string delLogStr
-        {
-            set
-            {
-                ViewState["delLogStr"] = value;
-            }
-            get
-            {
-                if (ViewState["delLogStr"] != null)
-                {
-                    return (string)ViewState["delLogStr"];
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
 
         public int ctrlAccID
         {
@@ -212,44 +73,6 @@ namespace Account
                 if (ViewState["hdfAccID"] != null)
                 {
                     return (int)ViewState["hdfAccID"];
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-        }
-
-        public string ctrlDate
-        {
-            set
-            {
-                ViewState["ctrlDate"] = value;
-            }
-            get
-            {
-                if (ViewState["ctrlDate"] != null)
-                {
-                    return ViewState["ctrlDate"].ToString();
-                }
-                else
-                {
-                    return "";
-                }
-            }
-        }
-
-        public int ctrlMonth
-        {
-            set
-            {
-                ViewState["ctrlMonth"] = value;
-            }
-            get
-            {
-                if (ViewState["ctrlMonth"] != null)
-                {
-                    return int.Parse(ViewState["ctrlMonth"].ToString());
                 }
                 else
                 {
@@ -277,7 +100,6 @@ namespace Account
                 ViewState["dtFileName"] = value;
             }
         }
-        string AccID1;
         public string ID
         {
             get
@@ -521,6 +343,7 @@ namespace Account
                         //TransRpt_Update();
 
                         GlobalUI.MessageBox("Update Successful");
+                        Clear();
 
                     }
                 catch (Exception ex)
