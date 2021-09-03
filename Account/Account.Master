@@ -1,0 +1,331 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Account.master.cs" Inherits="Account.Account" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<%--     <link rel="icon" href="images/1_hXI_icon.ico" />--%>
+    <title>
+       
+
+    </title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+     <script src="<%=ResolveClientUrl("~/js/jquery.min 3.2.1.js")%>"></script>
+     <script src="<%=ResolveClientUrl("~/js/jquery.min.js")%>"></script>
+     <script src="<%=ResolveClientUrl("~/js/moment.min.js")%>"></script>
+
+     <script src="<%=ResolveClientUrl("~/js/bootstrap-datetimepicker.min.js")%>"></script>
+     <link rel="stylesheet" href="<%=ResolveClientUrl("~/css/bootstrap-datetimepicker.min.css")%>"/>
+
+     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" >
+        function isNumberKey(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode >= 48 && charCode <= 57) || charCode == 8 || charCode == 46)
+                return true;
+            else return false;
+        }
+        function ctrlEnter(evt) {
+            if ((evt.target || evt.srcElement).nodeName != "TEXTAREA" ) {
+                return (evt.keyCode != 13);
+            }
+        }
+    </script>
+ <style type="text/css">
+        .btn-outline 
+        {
+        color: inherit;
+        background-color: transparent;
+        transition: all .5s;
+        }
+        .mastercheckbox
+        {
+        position: relative;
+        display: block;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        margin-left: 10px;
+        }
+        .mastercheckbox input[type=checkbox] + label
+        {
+        font-weight: unset;
+        margin-left: 5px;
+        margin-right:10px;
+        }        
+        .input-control
+        {
+            display: block;
+            width:196px;
+            height: 29px;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #555;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        }
+
+     .input-control-noBlock
+      {
+            width:126px;
+            height: 29px;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #555;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+            
+      }
+        .input-control-noBlock:focus{
+            border-color: #66afe9;
+            outline: 0;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+        }
+
+
+       .input-control:focus {
+            border-color: #66afe9;
+            outline: 0;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+        }
+        .title
+        {
+            display: inline-block;
+            max-width: 100%;
+            margin-bottom: 5px;
+            font-weight: 700;
+            margin-top: 5px;
+        }
+        .calendar-container
+        {
+            width:230px;
+            position: relative;
+            min-height: 1px;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+       .pagination-ys {
+        /*display: inline-block;*/
+        padding-left: 0;
+        margin: 20px 0;
+        border-radius: 4px;
+        }
+ 
+        .pagination-ys table > tbody > tr > td 
+        {
+            display: inline;
+        }
+ 
+        .pagination-ys table > tbody > tr > td > a,
+        .pagination-ys table > tbody > tr > td > span {
+            position: relative;
+            float: left;
+            padding: 8px 12px;
+            line-height: 1.42857143;
+            text-decoration: none;
+            color: #dd4814;
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+            margin-left: -1px;
+        }
+ 
+        .pagination-ys table > tbody > tr > td > span {
+            position: relative;
+            float: left;
+            padding: 8px 12px;
+            line-height: 1.42857143;
+            text-decoration: none;    
+            margin-left: -1px;
+            z-index: 2;
+            color: #aea79f;
+            background-color: #f5f5f5;
+            border-color: #dddddd;
+            cursor: default;
+        }
+ 
+        .pagination-ys table > tbody > tr > td:first-child > a,
+        .pagination-ys table > tbody > tr > td:first-child > span {
+            margin-left: 0;
+            border-bottom-left-radius: 4px;
+            border-top-left-radius: 4px;
+        }
+ 
+        .pagination-ys table > tbody > tr > td:last-child > a,
+        .pagination-ys table > tbody > tr > td:last-child > span {
+            border-bottom-right-radius: 4px;
+            border-top-right-radius: 4px;
+        }
+ 
+        .pagination-ys table > tbody > tr > td > a:hover,
+        .pagination-ys table > tbody > tr > td > span:hover,
+        .pagination-ys table > tbody > tr > td > a:focus,
+        .pagination-ys table > tbody > tr > td > span:focus {
+            color: #97310e;
+            background-color: #eeeeee;
+            border-color: #dddddd;
+        }
+ 
+        .cntrHeaderTxt th 
+        {
+            text-align: center;
+        }
+        .classlabel {
+          display: inline-block;
+          /*width: 70px;*/
+          text-align: right;
+        }
+        .preformatted 
+        {
+            white-space: pre-line;
+        }   
+        .cstmBtn
+        {
+            display: inline-block;
+            padding: 6px 12px;
+            margin-bottom: 0;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.42857143;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            -ms-touch-action: manipulation;
+            touch-action: manipulation;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            background-image: none;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            margin-left: 15px;
+        }
+
+</style>
+   
+<asp:ContentPlaceHolder ID="head" runat="server">
+</asp:ContentPlaceHolder>
+</head>
+<body style="font-size:13px;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;" >
+    <form runat="server" class="form-inline">
+  <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" id="homepg" href="#" runat="server">Account</a>
+    </div> 
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav" id="navbar" runat="server">
+          <%--<li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#" visible="false" id="setup">Set Up<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a id="setup1" visible="false">Account Entry</a></li>
+            <li><a id="setup2" visible="false">User Entry</a></li>
+            <li><a id="setup3" visible="false">Roles Entry</a></li>
+            <li><a id="setup4" visible="false">Form Entry</a></li>
+            <li><a id="setup5" visible="false">Transaction Type Entry</a></li>
+          </ul>
+        </li>
+         <li class="active"><a href="<%=ResolveClientUrl("~/Account/AccountEntry.aspx")%>">Account Entry</a></li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Transaction<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="<%=ResolveClientUrl("~/Account/TransactionEntry.aspx")%>">Transaction Entry</a></li>
+            <li><a href="<%=ResolveClientUrl("~/Account/Transaction_Report.aspx")%>">Transaction Report</a></li>
+          </ul>
+        </li>
+        <li><a href="<%=ResolveClientUrl("~/Account/OpeningBalance.aspx")%>">Opening Balance</a></li>--%>
+      </ul>
+    <ul class="nav navbar-nav navbar-right">
+
+        <li style="padding-top: 1px;"><a><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;<asp:Label ID="lblUser" runat="server" ForeColor="#9d9d9d"></asp:Label></a></li>
+        <li><a><span class="glyphicon glyphicon-log-out"></span>
+            <asp:Button ID="btnLogOut" runat="server" Text="Log Out"  onClick="btnLogOut_Click" CssClass="btn-link"/>
+            </a>
+        </li>
+    </ul>
+           <%-- <asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" ShowStartingNode="false" SiteMapProvider="SiteMap"/>
+         
+         <asp:Repeater ID="Repeater1" DataSourceID="SiteMapDataSource1" runat="server">
+                <ItemTemplate>
+    
+                 <li class="dropdown"><a  class="dropdown-toggle" data-toggle="dropdown" href='<%#Eval("url") %>'><%#Eval("Title") %><span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <asp:Repeater ID="bar" DataSource='<%# ((SiteMapNode) Container.DataItem).ChildNodes %>' runat="server">
+                        <ItemTemplate>
+                        <li> <a href='<%#Eval("url") %>'><%#Eval("Title") %></a></li>  
+                        </ItemTemplate>
+                        </asp:Repeater>
+                </ul></li>
+                                  
+                </ItemTemplate>
+            </asp:Repeater>--%>
+        </div>
+      </div>
+      </nav>
+        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+        
+        </asp:ContentPlaceHolder>
+            <a id="back-to-top" href="#" class="btn btn-sm back-to-top" role="button" data-toggle="tooltip" data-placement="left">
+                <span class="glyphicon glyphicon-chevron-up"></span>
+            </a>
+      </form>
+        <script>
+            $(document).ready(function () {
+                $(window).scroll(function () {
+                    if ($(this).scrollTop() > 50) {
+                        $('#back-to-top').fadeIn();
+                    } else {
+                        $('#back-to-top').fadeOut();
+                    }
+                });
+                // scroll body to 0px on click
+                $('#back-to-top').click(function () {
+                    $('#back-to-top').tooltip('hide');
+                    $('body,html').animate({
+                        scrollTop: 0
+                    }, 800);
+                    return false;
+                });
+
+                $('#back-to-top').tooltip('show');
+
+            });
+      </script>
+      <style>
+           .back-to-top {
+            cursor: pointer;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display:none;
+            background-color:#cccccc;
+            }
+        </style>
+</body>
+</html>

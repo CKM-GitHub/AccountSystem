@@ -1,0 +1,68 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1022
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Account", "Account\Account.csproj", "{FCC78BE7-7DF9-4B4D-8B7F-4A1B084478B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Account_BL", "Account_BL\Account_BL.csproj", "{5972A599-8192-4F77-BCC5-09D9C92237A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Account_DL", "Account_DL\Account_DL.csproj", "{89F48BA7-A440-4431-A1B3-2713B8288E55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpeningBalance_Console", "OpeningBalance_Console\OpeningBalance_Console.csproj", "{E225FAD4-6C09-4A33-9DAC-7356247E347E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DB_Backup_Console", "DB_Backup\DB_Backup_Console.csproj", "{4BFE75D0-443C-4E91-AA6F-4D09932BF775}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FCC78BE7-7DF9-4B4D-8B7F-4A1B084478B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCC78BE7-7DF9-4B4D-8B7F-4A1B084478B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCC78BE7-7DF9-4B4D-8B7F-4A1B084478B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCC78BE7-7DF9-4B4D-8B7F-4A1B084478B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5972A599-8192-4F77-BCC5-09D9C92237A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5972A599-8192-4F77-BCC5-09D9C92237A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5972A599-8192-4F77-BCC5-09D9C92237A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5972A599-8192-4F77-BCC5-09D9C92237A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89F48BA7-A440-4431-A1B3-2713B8288E55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89F48BA7-A440-4431-A1B3-2713B8288E55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89F48BA7-A440-4431-A1B3-2713B8288E55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89F48BA7-A440-4431-A1B3-2713B8288E55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E225FAD4-6C09-4A33-9DAC-7356247E347E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E225FAD4-6C09-4A33-9DAC-7356247E347E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E225FAD4-6C09-4A33-9DAC-7356247E347E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E225FAD4-6C09-4A33-9DAC-7356247E347E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BFE75D0-443C-4E91-AA6F-4D09932BF775}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BFE75D0-443C-4E91-AA6F-4D09932BF775}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BFE75D0-443C-4E91-AA6F-4D09932BF775}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BFE75D0-443C-4E91-AA6F-4D09932BF775}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CEBEC9DB-D878-40B9-ABFF-14143465F5AD}
+	EndGlobalSection
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 6
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Account\\Account.csproj
+		SccLocalPath1 = .
+		SccProjectFilePathRelativizedFromConnection1 = Account\\
+		SccProjectUniqueName2 = Account_BL\\Account_BL.csproj
+		SccLocalPath2 = .
+		SccProjectFilePathRelativizedFromConnection2 = Account_BL\\
+		SccProjectUniqueName3 = Account_DL\\Account_DL.csproj
+		SccLocalPath3 = .
+		SccProjectFilePathRelativizedFromConnection3 = Account_DL\\
+		SccProjectUniqueName4 = DB_Backup\\DB_Backup_Console.csproj
+		SccLocalPath4 = .
+		SccProjectFilePathRelativizedFromConnection4 = DB_Backup\\
+		SccProjectUniqueName5 = OpeningBalance_Console\\OpeningBalance_Console.csproj
+		SccLocalPath5 = .
+		SccProjectFilePathRelativizedFromConnection5 = OpeningBalance_Console\\
+	EndGlobalSection
+EndGlobal

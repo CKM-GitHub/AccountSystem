@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+    <siteMapNode url="" title=""  description="">
+        <siteMapNode url="~/Account/AccountEntry.aspx" title="Account Entry" roles="Administrators,AccountUsers" />
+        <!--<siteMapNode url="~/Account/Login.aspx" title="Account Entry" roles="Administrators,AccountUsers" />-->
+
+      <siteMapNode title="Transaction" roles="Administrators,AccountUsers">
+        <siteMapNode url="~/Account/Transaction.aspx" title="Transaction Entry" roles="Administrators,AccountUsers" />
+        <siteMapNode url="~/Account/TransactionReport.aspx" title="Transaction Report" roles="Administrators,AccountUsers" />
+      </siteMapNode>
+
+      <siteMapNode title="SetUp" roles="Administrators,AccountUsers">
+        <siteMapNode url="~/Admin/RolesEntry.aspx" title="Roles Entry" roles="Administrators,AccountUsers" />
+        <siteMapNode url="~/Admin/UserEntry.aspx" title="User Entry" roles="Administrators,AccountUsers" />
+      </siteMapNode>
+
+      <!--<siteMapNode url="~/Admin/Login.aspx" title="Roles Entry" roles="Administrators,AccountUsers" />-->
+
+    </siteMapNode>
+</siteMap>
