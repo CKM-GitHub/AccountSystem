@@ -83,7 +83,7 @@
           <section class="wrapper">
      <div class="container-fluid" id="Div1" onclick="parent_disable(this);">
     <div class="container" id="MainDiv">
-        a<asp:ScriptManager ID="ScriptManager1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server">
     </asp:ScriptManager>
 <h1>Transaction Entry</h1>
     <div class="row">
@@ -170,11 +170,12 @@
            </div>
             <br />
     </div>
+        <br />
     <br />
         <footer>
-            <div class=" row col-lg-7" style="text-align:center; margin-top:15px;">
-    <asp:Button runat="server" ID="btnSave"  Text="Save" CssClass="btn btn-primary" OnClick="btnSave_Click" ValidationGroup="trans" style="width:150px"/>
-    <asp:Button ID="btnCancel" CssClass="btn btn-outline btn-primary" runat="server" OnClick="btnCancel_Click" Text="Cancel"  style="width:150px"/>           
+            <div class=" row col-lg-7" style="margin-left: 15px; top: 15px; left: 0px;" >
+    <asp:Button runat="server" ID="btnSave"  Text="Save" CssClass="btn btn-primary" OnClick="btnSave_Click" ValidationGroup="trans" style="width:96px"/>
+    <asp:Button ID="btnCancel" CssClass="btn btn-outline btn-primary" runat="server" OnClick="btnCancel_Click" Text="Cancel"  style="width:96px"/>           
     </div>
         </footer>
     

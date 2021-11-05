@@ -130,7 +130,6 @@ namespace Account
 
                 canEdit = ctrl[0];
                 canDel = ctrl[1];
-
                 #endregion
                 if (!IsPostBack)
                 {
@@ -175,14 +174,19 @@ namespace Account
                 ddlAccName.ClearSelection();
                 ddlAccName.Items.FindByText(dt.Rows[0]["AccountName"].ToString()).Selected = true;
             }
-            if (ddlStatus.Items.FindByText(dt.Rows[0]["StatusID"].ToString()) != null)
+            string sname = dt.Rows[0]["StatusID"].ToString();
+
+            if (ddlStatus.Items.FindByValue(dt.Rows[0]["StatusID"].ToString()) != null)
             {
                 ddlStatus.ClearSelection();
-                ddlStatus.Items.FindByText(dt.Rows[0]["StatusID"].ToString()).Selected = true;
+                ddlStatus.Items.FindByValue(dt.Rows[0]["StatusID"].ToString()).Selected = true;
             }
+            
             if (!String.IsNullOrWhiteSpace(dt.Rows[0]["Date"].ToString()))
             {
-                txtDate.Text = dt.Rows[0]["Date"].ToString();
+                
+                txtDate.Text = String.Format("{0:dd-MM-yyyy HH:mm:ss}", dt.Rows[0]["Date"]); 
+                
             }
             if (!String.IsNullOrWhiteSpace(dt.Rows[0]["ExpenseUSD"].ToString()))
             {
@@ -213,10 +217,10 @@ namespace Account
                 ddlCashUnit.ClearSelection();
                 ddlCashUnit.Items.FindByText(dt.Rows[0]["Unit"].ToString()).Selected = true;
             }
-            if (ddlTransType.Items.FindByText(dt.Rows[0]["TransType"].ToString()) != null)
+            if (ddlTransType.Items.FindByValue(dt.Rows[0]["TransType"].ToString()) != null)
             {
                 ddlTransType.ClearSelection();
-                ddlTransType.Items.FindByText(dt.Rows[0]["TransType"].ToString()).Selected = true;
+                ddlTransType.Items.FindByValue(dt.Rows[0]["TransType"].ToString()).Selected = true;
             }
             if (!String.IsNullOrWhiteSpace(dt.Rows[0]["Particular"].ToString()))
             {
@@ -225,6 +229,24 @@ namespace Account
             if (!String.IsNullOrWhiteSpace(dt.Rows[0]["Remarks"].ToString()))
             {
                 txtRemark.Text = dt.Rows[0]["Remarks"].ToString();
+            }
+            if (!String.IsNullOrWhiteSpace(dt.Rows[0]["FileName"].ToString()))
+            {
+
+                string filePath = attachFolderPath + "MUssVBwgcG8=" + dt.Rows[0]["ACCID"].ToString() + "\\" + dt.Rows[0]["TransID"].ToString() + "\\";
+                DataColumn dc1 = new DataColumn("FolderPath", typeof(string));
+                dt.Columns.Add(dc1);
+
+                DataColumn dc2 = new DataColumn("FilePath", typeof(string));
+                dt.Columns.Add(dc2);
+                dt.Rows[0]["FolderPath"] = filePath;
+                dt.Rows[0]["FilePath"] = filePath + dt.Rows[0]["FileName"].ToString();
+
+
+
+                //Session["dtFileName"] = dt;
+                gdvAttachFiles.DataSource = dt;
+                gdvAttachFiles.DataBind();
             }
         }
         public DataTable SelectEditData(int accID)
@@ -345,7 +367,7 @@ namespace Account
                         GlobalUI.MessageBox("Update Successful");
                         Clear();
 
-                    }
+                }
                 catch (Exception ex)
                 {
                     GlobalUI.MessageBox("Update Unsuccessful");
