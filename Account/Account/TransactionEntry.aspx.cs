@@ -150,6 +150,10 @@ namespace Account
                         {
                             btnSave.Text = "Update";
                             BindData(dtb);
+                            txtDate.Enabled = false;
+                            btnAddAttach.Enabled = false;
+                            ddlAccName.Enabled = false;
+                            
                         }
 
                         BindData(dtb);
@@ -241,10 +245,6 @@ namespace Account
                 dt.Columns.Add(dc2);
                 dt.Rows[0]["FolderPath"] = filePath;
                 dt.Rows[0]["FilePath"] = filePath + dt.Rows[0]["FileName"].ToString();
-
-
-
-                //Session["dtFileName"] = dt;
                 gdvAttachFiles.DataSource = dt;
                 gdvAttachFiles.DataBind();
             }
@@ -365,6 +365,7 @@ namespace Account
                         //TransRpt_Update();
 
                         GlobalUI.MessageBox("Update Successful");
+                        Response.Redirect("~/Account/Transaction_Report.aspx?ID="+ accID  , true); 
                         Clear();
 
                 }

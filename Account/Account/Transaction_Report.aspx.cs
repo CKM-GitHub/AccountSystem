@@ -303,7 +303,26 @@ namespace Account
                     TransTypeBind();
                     rptMonthsDataBind();
                     ddlYearBind();
-
+                    if (!String.IsNullOrWhiteSpace(Request.QueryString["ID"]))
+                    {
+                        ddlAccName.SelectedValue = Session["AccUpdate"].ToString();
+                        ddlTransType.SelectedValue = Session["TypeUpdate"].ToString();
+                        ddlYear.SelectedValue = Session["YearUpdate"].ToString();
+                        ddlStatus.SelectedValue = Session["StatusUpdate"].ToString();
+                        ddlCashUnit.SelectedValue = Session["CashUpdate"].ToString();
+                        txtFromDate.Text = Session["DateFUpdate"].ToString();
+                        txtToDate.Text = Session["DateTUpdate"].ToString();
+                        pnlLast.Visible = true;
+                        gdvTransReportSnd.Visible = false;
+                        SearchReport(rdOpt.SelectedValue, gdvTransReport, int.Parse(ddlAccName.SelectedValue), int.Parse(ddlTransType.SelectedValue),
+                        int.Parse(ddlStatus.SelectedValue), ddlCashUnit.SelectedItem.Text, txtFromDate.Text, txtToDate.Text);
+                        Session["AccUpdate"] = "";
+                        Session["TypeUpdate"] = "";
+                        Session["YearUpdate"] = "";
+                        Session["CashUpdate"] = "";
+                        Session["DateFUpdate"] = "";
+                        Session["DateTUpdate"] = "";
+                    }
                     if (!String.IsNullOrWhiteSpace(Request.QueryString["sav"]))
                     {
                         accID = GlobalUI.DecryptQueryString(Request.QueryString["sav"]);
@@ -2830,9 +2849,17 @@ namespace Account
                 var index = Convert.ToInt32(e.CommandArgument);
                 if (e.CommandName == "Edit")
                 {
+                    Session["AccUpdate"] = ddlAccName.SelectedValue.ToString();
+                    Session["TypeUpdate"] = ddlTransType.SelectedValue.ToString();
+                    Session["YearUpdate"] = ddlYear.SelectedValue.ToString();
+                    Session["StatusUpdate"] = ddlStatus.SelectedValue.ToString();
+                    Session["CashUpdate"] = ddlCashUnit.SelectedValue.ToString();
+                    Session["DateFUpdate"] = txtFromDate.Text.ToString();
+                    Session["DateTUpdate"] = txtToDate.Text.ToString();
                     GridViewRow row = gdvTransReport.Rows[index];
                     HiddenField hdfID = (HiddenField)row.FindControl("hdfID");
                     Response.Redirect("~/Account/TransactionEntry.aspx?ID=" + hdfID.Value, true);
+                   
                 }
                 if (e.CommandName == "Delete")
                 {                  

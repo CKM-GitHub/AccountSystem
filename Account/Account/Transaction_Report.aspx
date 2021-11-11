@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Transaction_Report.aspx.cs" Inherits="Account.Transaction_Report" MasterPageFile="~/Account.Master" EnableEventValidation = "false"   %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Transaction_Report.aspx.cs" Inherits="Account.Transaction_Report" MasterPageFile="~/Account.Master"   %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
    
