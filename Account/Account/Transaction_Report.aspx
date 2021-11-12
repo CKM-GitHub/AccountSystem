@@ -18,9 +18,10 @@
                 format: 'DD/MM/YYYY LT',
                 showClear: true,
                 useCurrent: false
+
                
             }).on('dp.change', function (e) {
-                
+                $(this).data('DateTimePicker').hide();
               //__doPostBack("txtFromDate", "TextChanged");
             });
             $('#datetimepicker2').datetimepicker({
@@ -30,6 +31,7 @@
 
             }).on('dp.change', function (e) {
                
+                $(this).data('DateTimePicker').hide();
                //__doPostBack("txtFromDate", "TextChanged");
 
             });
