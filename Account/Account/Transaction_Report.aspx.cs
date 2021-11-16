@@ -293,7 +293,6 @@ namespace Account
                     btnExportPDF.Visible = true;
 
                 }
-
                 if (!IsPostBack)
                 {
                     Session.Remove("dtFileName");
@@ -316,6 +315,7 @@ namespace Account
                         gdvTransReportSnd.Visible = false;
                         SearchReport(rdOpt.SelectedValue, gdvTransReport, int.Parse(ddlAccName.SelectedValue), int.Parse(ddlTransType.SelectedValue),
                         int.Parse(ddlStatus.SelectedValue), ddlCashUnit.SelectedItem.Text, txtFromDate.Text, txtToDate.Text);
+                        search_no = 1;
                         Session["AccUpdate"] = "";
                         Session["TypeUpdate"] = "";
                         Session["YearUpdate"] = "";
