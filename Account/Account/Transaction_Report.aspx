@@ -187,7 +187,7 @@
                     </td>
                     <td colspan="4" style="padding-left:55px">
                       <div class="row">
-                        <div class="col-md-9" align="right" style="padding-right:0px ;padding-left:11px">
+                         <div class="col-md-9" align="right" style="padding-right:0px;padding-left:11px; top: 0px; left: -12px;">
                         <asp:DataList ID="rptMonths" runat="server" RepeatDirection="Horizontal"  CssClass="viewMore_pager" OnItemDataBound="rptMonths_ItemDataBound" >
                            <ItemTemplate>
                                 <asp:UpdatePanel ID="upMonth" runat="server" >
@@ -205,13 +205,13 @@
                         </asp:DataList>
                            
                         </div>
-                       <label class="classlabel " style="float:left;padding-left:3px;padding-top:10px;padding-right:2px;">Year:</label>
+                        <label class="classlabel " style="float:left;margin-left:-7px;padding-top:10px;padding-right:0px;">Year:</label>
                            <asp:UpdatePanel ID="upSetSession2" runat="server">
                         <ContentTemplate>
                         <div class="col-md-2" style="padding-bottom:10px;padding-left:0px;">
                             <div class="input-group-sm" style="padding-top: 3px">
                        
-                        <asp:DropDownList ID="ddlYear" runat="server" width="83px" CssClass="form-control" OnSelectedIndexChanged="ddlYear_SelectedIndexChanged" AutoPostBack="true">
+                        <asp:DropDownList ID="ddlYear" runat="server" width="92px" CssClass="form-control" OnSelectedIndexChanged="ddlYear_SelectedIndexChanged" AutoPostBack="true">
                         </asp:DropDownList>
                          </div>
                         </div>
