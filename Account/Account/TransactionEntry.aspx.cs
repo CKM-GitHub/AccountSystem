@@ -663,32 +663,38 @@ namespace Account
 
         protected void btnAddAttach_Click(object sender, EventArgs e)
         {
-            Session.Remove("Report_dtFileName");
-           // GetLinkButton(AccID);
-            try
-            {
-                LinkButton l = (LinkButton)sender;
-                int transID = int.Parse(Request.QueryString["ID"]);
-                DataTable dtb = new DataTable();
-                dtb = transBL.SelectEditData(transID);
-                string AccID = "";
-                if (!String.IsNullOrWhiteSpace(dtb.Rows[0]["ACCID"].ToString()))
-                {
-                     AccID = dtb.Rows[0]["ACCID"].ToString();
-                }
 
-                string filePath = attachFolderPath + "MUssVBwgcG8=" + AccID + "\\" + transID.ToString() + "\\";
-              
-                 BindModalGridView(AccID, transID, filePath);
-             //   BindData(dtb);
-                GetLinkButton(AccID);
+            if (Request.QueryString["ID"] != null)
+            {
+                try
+                {
+                   
+                    int transID = int.Parse(Request.QueryString["ID"]);
+                    DataTable dtb = new DataTable();
+                    dtb = transBL.SelectEditData(transID);
+                    string AccID = "";
+                    if (!String.IsNullOrWhiteSpace(dtb.Rows[0]["ACCID"].ToString()))
+                    {
+                        AccID = dtb.Rows[0]["ACCID"].ToString();
+                    }
+
+                    string filePath = attachFolderPath + "MUssVBwgcG8=" + AccID + "\\" + transID.ToString() + "\\";
+
+                    BindModalGridView(AccID, transID, filePath);
+                    //   BindData(dtb);
+                    GetLinkButton(AccID);
+                    ClientScript.RegisterStartupScript(this.GetType(), "popup_window", "<script>ShowAtta_PopUp('this')</script>");
+                }
+                catch (Exception ex)
+                {
+                    errBL.SaveErrLog(this.GetType().Name.Replace("_", "/"), ex.ToString());
+                }
+            }
+            else
+            {
+                Session.Remove("Report_dtFileName");
                 ClientScript.RegisterStartupScript(this.GetType(), "popup_window", "<script>ShowAtta_PopUp('this')</script>");
             }
-            catch (Exception ex)
-            {
-                errBL.SaveErrLog(this.GetType().Name.Replace("_", "/"), ex.ToString());
-            }
-            //  ClientScript.RegisterStartupScript(this.GetType(), "popup_window", "<script>ShowAtta_PopUp('this')</script>");
         }
         protected void GetLinkButton(string AccID)
         {
@@ -707,43 +713,42 @@ namespace Account
         {
             try
             {
-                int trID = int.Parse(Request.QueryString["ID"]);
-                DataTable dtm = new DataTable();
-                dtm = transBL.SelectEditData(transID);
+                // int trID = int.Parse(Request.QueryString["ID"]);
+                DataTable dtl = transBL.GetTransAttachs(transID);
                 DataColumn dc1 = new DataColumn("FolderPath", typeof(string));
-                dtm.Columns.Add(dc1);
+                dtl.Columns.Add(dc1);
 
                 DataColumn dc2 = new DataColumn("FilePath", typeof(string));
-                dtm.Columns.Add(dc2);
+                dtl.Columns.Add(dc2);
 
-                if (!dtm.Columns.Contains("TransID"))
+                if (!dtl.Columns.Contains("TransID"))
                 {
                     DataColumn dc3 = new DataColumn("TransID", typeof(string));
-                    dtm.Columns.Add(dc3);
+                    dtl.Columns.Add(dc3);
                 }
 
                 DataColumn dc4 = new DataColumn("AccID", typeof(string));
-                dtm.Columns.Add(dc4);
+                dtl.Columns.Add(dc4);
 
-                DataRow dr = dtm.NewRow();
+                DataRow dr = dtl.NewRow();
                 dr["TransID"] = transID;
-                dtm.Rows.InsertAt(dr, 0);
+                dtl.Rows.InsertAt(dr, 0);
 
-                dtm.Rows[0]["AccID"] = AccID;
+                dtl.Rows[0]["AccID"] = AccID;
 
-                if (dtm.Rows.Count > 1)
+                if (dtl.Rows.Count > 1)
                 {
-                    for (int i = 1; i < dtm.Rows.Count; i++)
+                    for (int i = 1; i < dtl.Rows.Count; i++)
                     {
-                        if (!String.IsNullOrWhiteSpace(dtm.Rows[i]["FileName"].ToString()))
+                        if (!String.IsNullOrWhiteSpace(dtl.Rows[i]["FileName"].ToString()))
                         {
-                            dtm.Rows[i]["FolderPath"] = filePath;
-                            dtm.Rows[i]["FilePath"] = filePath + dtm.Rows[i]["FileName"].ToString();
+                            dtl.Rows[i]["FolderPath"] = filePath;
+                            dtl.Rows[i]["FilePath"] = filePath + dtl.Rows[i]["FileName"].ToString();
                         }
                     }
                 }
 
-                Session["Report_dtFileName"] = dtm;
+                Session["dtFileName"] = dtl;
                 //  UPanel.Update();
             }
             catch (Exception ex)
