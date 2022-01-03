@@ -163,7 +163,7 @@
                     <Columns>
                     <asp:HyperLinkField DataTextField="FileName" DataNavigateUrlFields="FilePath" Target="_blank"/>
                     <asp:BoundField DataField="" />
-                    <asp:ButtonField ButtonType="Link" CommandName="file_Delete_GridOut" Text="<i class='glyphicon glyphicon-remove'></i>"  ControlStyle-CssClass="btn-sm btn-danger" />
+                    <asp:ButtonField  ButtonType="Link"  CommandName="file_Delete_GridOut" Text="<i class='glyphicon glyphicon-remove'></i>"  ControlStyle-CssClass="btn-sm btn-danger" />
                     </Columns>
                 </asp:GridView>                
                 </asp:Panel>             
