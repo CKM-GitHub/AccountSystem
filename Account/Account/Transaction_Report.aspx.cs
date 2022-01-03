@@ -287,7 +287,7 @@ namespace Account
 
                 #endregion
 
-                if (canExportUser.Contains(Page.User.Identity.Name) || Page.User.Identity.Name == accAdmin)
+                if (canExportUser.Contains(Page.User.Identity.Name) || accAdmin.Contains(Page.User.Identity.Name))
                 {
                     btnExport.Visible = true;
                     btnExportPDF.Visible = true;
