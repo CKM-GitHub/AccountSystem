@@ -151,7 +151,7 @@ namespace Account
                             btnSave.Text = "Update";
                             BindData(dtb);
                             txtDate.Enabled = false;
-                           // btnAddAttach.Enabled = false;
+                            btnAddAttach.Enabled = false;
                             ddlAccName.Enabled = false;
                             
                         }
@@ -249,6 +249,7 @@ namespace Account
                 gdvAttachFiles.DataSource = dt;
                 gdvAttachFiles.DataBind();
                 Session["dtFileName"] = dt;
+                gdvAttachFiles.Enabled = false;
                
             }
         }
