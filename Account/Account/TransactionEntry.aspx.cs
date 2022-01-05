@@ -156,7 +156,7 @@ namespace Account
                             
                         }
 
-                        BindData(dtb);
+                        //BindData(dtb);
                         //Update();
                     }
 
@@ -238,19 +238,32 @@ namespace Account
             {
 
                 string filePath = attachFolderPath + "MUssVBwgcG8=" + dt.Rows[0]["ACCID"].ToString() + "\\" + dt.Rows[0]["TransID"].ToString() + "\\";
+                int transID = int.Parse(Request.QueryString["ID"]);
+                DataTable dtAttach = transBL.GetTransAttachs(transID);
                 DataColumn dc1 = new DataColumn("FolderPath", typeof(string));
-                dt.Columns.Add(dc1);
+                dtAttach.Columns.Add(dc1);
 
                 DataColumn dc2 = new DataColumn("FilePath", typeof(string));
-                dt.Columns.Add(dc2);
-                dt.Rows[0]["FolderPath"] = filePath;
-                dt.Rows[0]["FilePath"] = filePath + dt.Rows[0]["FileName"].ToString();
-                
-                gdvAttachFiles.DataSource = dt;
-                gdvAttachFiles.DataBind();
-                Session["dtFileName"] = dt;
+                dtAttach.Columns.Add(dc2);
+
+                if (!dtAttach.Columns.Contains("TransID"))
+                {
+                    DataColumn dc3 = new DataColumn("TransID", typeof(string));
+                    dtAttach.Columns.Add(dc3);
+                }
+                if (dtAttach.Rows.Count > 1)
+                {
+                    for (int i = 1; i < dtAttach.Rows.Count; i++)
+                    {
+                        if (!String.IsNullOrWhiteSpace(dtAttach.Rows[i]["FileName"].ToString()))
+                        {
+                            dtAttach.Rows[i]["FolderPath"] = filePath;
+                            dtAttach.Rows[i]["FilePath"] = filePath + dtAttach.Rows[i]["FileName"].ToString();
+                        }
+                    }
+                }
+                Session["dtFileName"] = dtAttach;
                 gdvAttachFiles.Enabled = false;
-               
             }
         }
         public DataTable SelectEditData(int accID)
@@ -659,7 +672,14 @@ namespace Account
 
         protected void btnCancel_Click(object sender, EventArgs e)
         {
+           
             Clear();
+            if (Request.QueryString["ID"] != null)
+            {
+               int  accID = int.Parse(Request.QueryString["ID"]);
+                Response.Redirect("~/Account/Transaction_Report.aspx?ID=" + accID, true);
+            }
+                   
         }
 
         protected void btnAddAttach_Click(object sender, EventArgs e)
