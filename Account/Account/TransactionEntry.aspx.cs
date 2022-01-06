@@ -151,7 +151,7 @@ namespace Account
                             btnSave.Text = "Update";
                             BindData(dtb);
                             txtDate.Enabled = false;
-                            btnAddAttach.Enabled = false;
+                          //  btnAddAttach.Enabled = false;
                             ddlAccName.Enabled = false;
                             
                         }
@@ -263,7 +263,7 @@ namespace Account
                     }
                 }
                 Session["dtFileName"] = dtAttach;
-                gdvAttachFiles.Enabled = false;
+              //  gdvAttachFiles.Enabled = false;
             }
         }
         public DataTable SelectEditData(int accID)
@@ -377,15 +377,75 @@ namespace Account
                     try
                 {
                         string updatedUser = this.Page.User.Identity.Name;
-                        int accID = int.Parse(Request.QueryString["ID"]);
-                        transBL.UpdateTran(int.Parse(accID.ToString()), int.Parse(ddlAccName.SelectedItem.Value), int.Parse(ddlTransType.SelectedItem.Value), txtParticular.Text, txtRemark.Text, int.Parse(ddlStatus.SelectedItem.Value), txtAmount.Text.Replace(",", ""), ddlCashUnit.SelectedItem.Text, updatedUser); 
+                        int transID = int.Parse(Request.QueryString["ID"]);
+                        bool transUp=  transBL.UpdateTran(int.Parse(transID.ToString()), int.Parse(ddlAccName.SelectedItem.Value), int.Parse(ddlTransType.SelectedItem.Value), txtParticular.Text, txtRemark.Text, int.Parse(ddlStatus.SelectedItem.Value), txtAmount.Text.Replace(",", ""), ddlCashUnit.SelectedItem.Text, updatedUser);
                         //TransRpt_Update();
+                        //if (transUp)
+                        //{
+
+                        //    string AttachAccID = Session["AttachAccID"] == null ? "" : Session["AttachAccID"] as string;
+                        //    string sessionID = Session.SessionID;
+
+                        //    if (ddlAccName.SelectedValue == AttachAccID)
+                        //    {
+                        //        if (Session["dtFileName"] != null)
+                        //        {
+                        //            DataTable dt = Session["dtFileName"] as DataTable;
+
+                        //            if (dt.Rows.Count > 0)
+                        //            {
+                        //                string newFolder = Server.MapPath(attachFolderPath + "MUssVBwgcG8=" + ddlAccName.SelectedValue + "\\" + transID.ToString() + "\\");
+                        //                string oldFolder = Server.MapPath(attachFolderPath + "MUssVBwgcG8=" + ddlAccName.SelectedValue + "\\" + sessionID + "\\");
+
+                        //                for (int i = 0; i < dt.Rows.Count; i++)
+                        //                {
+                        //                    if (!String.IsNullOrWhiteSpace(dt.Rows[i]["FileName"].ToString()))
+                        //                    {
+                        //                        string fileName = dt.Rows[i]["FileName"] as string;
+
+                        //                        SaveTransAttachment(transID, fileName);
+
+                        //                        if (!Directory.Exists(newFolder))
+                        //                        {
+                        //                            Directory.CreateDirectory(newFolder);
+                        //                        }
+
+                        //                        //move files from sessionid folder to new saved transid folder
+                        //                        if (Directory.Exists(oldFolder))
+                        //                        {
+                        //                            string newFile = newFolder + fileName;
+                        //                            string oldFile = oldFolder + fileName;
+
+                        //                            File.Move(oldFile, newFile);
+                        //                            File.Delete(oldFile);
+                        //                        }
+                        //                    }
+                        //                }
+
+                        //                if (Directory.Exists(oldFolder))
+                        //                {
+                        //                    Directory.Delete(oldFolder, true);
+                        //                }
+
+                        //                Session.Clear();
+                        //            }
+                        //        }
+                        //    }
+                        //    GlobalUI.MessageBox("Update Successful");
+                        //    Response.Redirect("~/Account/Transaction_Report.aspx?ID=" + transID, true);
+                        //    Clear();
+                        //}
+                        //else
+                        //{
+                        //    GlobalUI.MessageBox("Save Unsuccessful!");
+                        //    Clear();
+                        //}
 
                         GlobalUI.MessageBox("Update Successful");
-                        Response.Redirect("~/Account/Transaction_Report.aspx?ID="+ accID  , true); 
+                        Response.Redirect("~/Account/Transaction_Report.aspx?ID=" + transID, true);
                         Clear();
 
-                }
+                    }
                 catch (Exception ex)
                 {
                     GlobalUI.MessageBox("Update Unsuccessful");
@@ -401,6 +461,7 @@ namespace Account
                     int transID = SaveTransaction(int.Parse(ddlAccName.SelectedItem.Value), int.Parse(ddlStatus.SelectedValue), txtAmount.Text.Replace(",", ""), ddlCashUnit.SelectedItem.Text, int.Parse(ddlTransType.SelectedValue), txtRemark.Text, txtParticular.Text, txtDate.Text, createdUser);   //save new accs
                     if (transID != 0)
                     {
+
                         string AttachAccID = Session["AttachAccID"] == null ? "" : Session["AttachAccID"] as string;
                         string sessionID = Session.SessionID;
 
@@ -701,10 +762,16 @@ namespace Account
 
                     string filePath = attachFolderPath + "MUssVBwgcG8=" + AccID + "\\" + transID.ToString() + "\\";
 
-                    BindModalGridView(AccID, transID, filePath);
+                     BindModalGridView(AccID, transID, filePath);
+
                     //   BindData(dtb);
+                  
+                
+                    //gdvAttachFiles.DataSource = dtl;
+                    //gdvAttachFiles.DataBind();
                     GetLinkButton(AccID);
                     ClientScript.RegisterStartupScript(this.GetType(), "popup_window", "<script>ShowAtta_PopUp('this')</script>");
+                    
                 }
                 catch (Exception ex)
                 {
@@ -750,11 +817,6 @@ namespace Account
 
                 DataColumn dc4 = new DataColumn("AccID", typeof(string));
                 dtl.Columns.Add(dc4);
-
-                DataRow dr = dtl.NewRow();
-                dr["TransID"] = transID;
-                dtl.Rows.InsertAt(dr, 0);
-
                 dtl.Rows[0]["AccID"] = AccID;
 
                 if (dtl.Rows.Count > 1)
@@ -769,7 +831,8 @@ namespace Account
                     }
                 }
 
-                Session["dtFileName"] = dtl;
+                Session["Report_dtFileName"] = dtl;
+              
                 //  UPanel.Update();
             }
             catch (Exception ex)

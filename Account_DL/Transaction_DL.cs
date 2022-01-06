@@ -247,7 +247,7 @@ namespace Account_DL
             }
         }
 
-        public void UpdateTran(int transID, int accID, int typID, string particular, string remarks, int stsID, string amount, string unit, string updUser)
+        public bool UpdateTran(int transID, int accID, int typID, string particular, string remarks, int stsID, string amount, string unit, string updUser)
         {
             DataTable dt = new DataTable();
             SqlConnection con = new SqlConnection(connection);
@@ -269,6 +269,7 @@ namespace Account_DL
             cmd.Connection.Open();
             cmd.ExecuteNonQuery();
             cmd.Connection.Close();
+            return true;
         }
 
         public void UpdateAllTran(int transID, string remainUSD, string remainKS, string remainYen)

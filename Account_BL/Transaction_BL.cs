@@ -61,9 +61,9 @@ namespace Account_BL
             transDL.UpdateAllTran(transID, remainUSD, remainKS, remainYen);
         }
 
-        public void UpdateTran(int transID, int accID, int typID, string particular, string remarks, int stsID, string amount, string unit, string updUser)
+        public bool UpdateTran(int transID, int accID, int typID, string particular, string remarks, int stsID, string amount, string unit, string updUser)
         {
-            transDL.UpdateTran(transID, accID, typID, particular, remarks, stsID, amount, unit, updUser);
+            return transDL.UpdateTran(transID, accID, typID, particular, remarks, stsID, amount, unit, updUser);
         }
 
         public DataTable GetTransAttachs(int transID)
