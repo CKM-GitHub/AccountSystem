@@ -10,7 +10,7 @@ namespace Account_BL
     public class Transaction_BL
     {
         Transaction_DL transDL = new Transaction_DL();
-        Transaction_Report_DL trarDL = new Transaction_Report_DL();
+        Transaction_Report_DL trarRDL = new Transaction_Report_DL();
 
         public DataTable AccNameDdlBind()
         {
@@ -68,8 +68,11 @@ namespace Account_BL
 
         public DataTable GetTransAttachs(int transID)
         {
-            return trarDL.GetTransAttachs(transID);
+            return trarRDL.GetTransAttachs(transID);
         }
-
+        public DataTable updTransAttach(int oldTransID, int newTransID)
+        {
+            return trarRDL.updTransAttach(oldTransID, newTransID);
+        }
     }
 }

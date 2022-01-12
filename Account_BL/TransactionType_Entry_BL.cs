@@ -10,7 +10,7 @@ namespace Account_BL
     public class TransactionType_Entry_BL
     {
         TransactionType_Entry_DL transDL = new TransactionType_Entry_DL();
-
+       
         public bool SaveNewTransType(string transType, string loginname)
         {
             return transDL.SaveNewTransType(transType, loginname);
@@ -35,5 +35,6 @@ namespace Account_BL
         {
             transDL.delTransType(transID);
         }
+       
     }
 }
