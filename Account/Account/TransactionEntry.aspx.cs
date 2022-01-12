@@ -378,11 +378,11 @@ namespace Account
                 {
                         string updatedUser = this.Page.User.Identity.Name;
                         int transID = int.Parse(Request.QueryString["ID"]);
+                        Session["AttachAccID"] = ddlAccName.SelectedValue;
                         bool transUp=  transBL.UpdateTran(int.Parse(transID.ToString()), int.Parse(ddlAccName.SelectedItem.Value), int.Parse(ddlTransType.SelectedItem.Value), txtParticular.Text, txtRemark.Text, int.Parse(ddlStatus.SelectedItem.Value), txtAmount.Text.Replace(",", ""), ddlCashUnit.SelectedItem.Text, updatedUser);
-                        //TransRpt_Update();
+
                         //if (transUp)
                         //{
-
                         //    string AttachAccID = Session["AttachAccID"] == null ? "" : Session["AttachAccID"] as string;
                         //    string sessionID = Session.SessionID;
 
@@ -394,8 +394,8 @@ namespace Account
 
                         //            if (dt.Rows.Count > 0)
                         //            {
-                        //                string newFolder = Server.MapPath(attachFolderPath + "MUssVBwgcG8=" + ddlAccName.SelectedValue + "\\" + transID.ToString() + "\\");
-                        //                string oldFolder = Server.MapPath(attachFolderPath + "MUssVBwgcG8=" + ddlAccName.SelectedValue + "\\" + sessionID + "\\");
+                        //                string oldFolder = Server.MapPath(attachFolderPath + "MUssVBwgcG8=" + ddlAccName.SelectedValue + "\\" + transID.ToString() + "\\");
+                        //                //string oldFolder = Server.MapPath(attachFolderPath + "MUssVBwgcG8=" + ddlAccName.SelectedValue + "\\" + sessionID + "\\");
 
                         //                for (int i = 0; i < dt.Rows.Count; i++)
                         //                {
@@ -405,39 +405,81 @@ namespace Account
 
                         //                        SaveTransAttachment(transID, fileName);
 
-                        //                        if (!Directory.Exists(newFolder))
-                        //                        {
-                        //                            Directory.CreateDirectory(newFolder);
-                        //                        }
 
-                        //                        //move files from sessionid folder to new saved transid folder
-                        //                        if (Directory.Exists(oldFolder))
-                        //                        {
-                        //                            string newFile = newFolder + fileName;
-                        //                            string oldFile = oldFolder + fileName;
 
-                        //                            File.Move(oldFile, newFile);
-                        //                            File.Delete(oldFile);
-                        //                        }
+                        //                        //string folderPath = Server.MapPath(attachFolderPath);
+                        //                        //folderPath += "MUssVBwgcG8=" + AccID + "\\" + transID.ToString() + "\\";
+
+                        //                        ////Check whether Directory (Folder) exists.
+                        //                        //if (!Directory.Exists(folderPath))
+                        //                        //{
+                        //                        //    //If Directory (Folder) does not exists. Create it.
+                        //                        //    Directory.CreateDirectory(folderPath);
+                        //                        //}
+
+                        //                        //Save the File to the Directory (Folder).
+                        //                        //if (attFile1.HasFile)
+                        //                        //{
+
+                        //                        //    DataRow dr = dt2.NewRow();
+                        //                        //    dr["FileName"] = Path.GetFileName(attFile1.FileName);
+                        //                        //    dt2.Rows.Add(dr);
+
+                        //                        //    attFile1.SaveAs(folderPath + Path.GetFileName(attFile1.FileName));
+
+                        //                        //}
+                        //                        //if (attFile2.HasFile)
+                        //                        //{
+                        //                        //    DataRow dr = dt2.NewRow();
+                        //                        //    dr["FileName"] = Path.GetFileName(attFile2.FileName);
+                        //                        //    dt2.Rows.Add(dr);
+
+                        //                        //    attFile2.SaveAs(folderPath + Path.GetFileName(attFile2.FileName));
+                        //                        //}
+                        //                        //if (attFile3.HasFile)
+                        //                        //{
+                        //                        //    DataRow dr = dt2.NewRow();
+                        //                        //    dr["FileName"] = Path.GetFileName(attFile3.FileName);
+                        //                        //    dt2.Rows.Add(dr);
+
+                        //                        //    attFile3.SaveAs(folderPath + Path.GetFileName(attFile3.FileName));
+                        //                        //}
+                        //                        //if (attFile4.HasFile)
+                        //                        //{
+                        //                        //    DataRow dr = dt2.NewRow();
+                        //                        //    dr["FileName"] = Path.GetFileName(attFile4.FileName);
+                        //                        //    dt2.Rows.Add(dr);
+
+                        //                        //    attFile4.SaveAs(folderPath + Path.GetFileName(attFile4.FileName));
+                        //                        //}
+                        //                        //if (attFile5.HasFile)
+                        //                        //{
+                        //                        //    DataRow dr = dt2.NewRow();
+                        //                        //    dr["FileName"] = Path.GetFileName(attFile5.FileName);
+                        //                        //    dt2.Rows.Add(dr);
+
+                        //                        //    attFile5.SaveAs(folderPath + Path.GetFileName(attFile5.FileName));
+                        //                        //}
                         //                    }
                         //                }
 
-                        //                if (Directory.Exists(oldFolder))
-                        //                {
-                        //                    Directory.Delete(oldFolder, true);
-                        //                }
+                        //                //if (Directory.Exists(odFolder))
+                        //                //{
+                        //                //    Directory.Delete(odFolder, true);
+                        //                //}
 
                         //                Session.Clear();
                         //            }
                         //        }
                         //    }
+
                         //    GlobalUI.MessageBox("Update Successful");
                         //    Response.Redirect("~/Account/Transaction_Report.aspx?ID=" + transID, true);
                         //    Clear();
                         //}
                         //else
                         //{
-                        //    GlobalUI.MessageBox("Save Unsuccessful!");
+                        //    GlobalUI.MessageBox("Update Unsuccessful");
                         //    Clear();
                         //}
 
@@ -458,6 +500,7 @@ namespace Account
                 else
                 {
                     string createdUser = this.Page.User.Identity.Name;
+                    
                     int transID = SaveTransaction(int.Parse(ddlAccName.SelectedItem.Value), int.Parse(ddlStatus.SelectedValue), txtAmount.Text.Replace(",", ""), ddlCashUnit.SelectedItem.Text, int.Parse(ddlTransType.SelectedValue), txtRemark.Text, txtParticular.Text, txtDate.Text, createdUser);   //save new accs
                     if (transID != 0)
                     {
@@ -584,6 +627,7 @@ namespace Account
             }
         }
 
+
         private void SaveTransAttachment(int transID, string fileName)
         {
             transBL.SaveTransAttachment(transID, fileName);
@@ -612,7 +656,7 @@ namespace Account
         {
             return transBL.SaveTransaction(accID, stsID, amount, cashUnit, transTypeID, remark, particular, date, createdUser);
         }
-
+       
         protected void ddlAccName_SelectedIndexChanged(object sender, EventArgs e)
         {
             //for rebinding datatable to session dtfilename 
@@ -831,7 +875,7 @@ namespace Account
                     }
                 }
 
-                Session["Report_dtFileName"] = dtl;
+                Session["dtFileName"] = dtl;
               
                 //  UPanel.Update();
             }
