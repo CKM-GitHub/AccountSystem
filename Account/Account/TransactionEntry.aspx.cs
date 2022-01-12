@@ -263,6 +263,7 @@ namespace Account
                     }
                 }
                 Session["dtFileName"] = dtAttach;
+                Session["Report_dtFileName"] = dtAttach;
               //  gdvAttachFiles.Enabled = false;
             }
         }
@@ -374,125 +375,92 @@ namespace Account
                 #region update
                 if (btnSave.Text == "Update")
                 {
-                    try
-                {
+                //    try
+                //{
                         string updatedUser = this.Page.User.Identity.Name;
                         int transID = int.Parse(Request.QueryString["ID"]);
                         Session["AttachAccID"] = ddlAccName.SelectedValue;
+                        string AccID= ddlAccName.SelectedValue.ToString();
                         bool transUp=  transBL.UpdateTran(int.Parse(transID.ToString()), int.Parse(ddlAccName.SelectedItem.Value), int.Parse(ddlTransType.SelectedItem.Value), txtParticular.Text, txtRemark.Text, int.Parse(ddlStatus.SelectedItem.Value), txtAmount.Text.Replace(",", ""), ddlCashUnit.SelectedItem.Text, updatedUser);
 
-                        //if (transUp)
-                        //{
-                        //    string AttachAccID = Session["AttachAccID"] == null ? "" : Session["AttachAccID"] as string;
-                        //    string sessionID = Session.SessionID;
+                        if (transUp)
+                        {
+                            string AttachAccID = Session["AttachAccID"] == null ? "" : Session["AttachAccID"] as string;
+                            string sessionID = Session.SessionID;
 
-                        //    if (ddlAccName.SelectedValue == AttachAccID)
-                        //    {
-                        //        if (Session["dtFileName"] != null)
-                        //        {
-                        //            DataTable dt = Session["dtFileName"] as DataTable;
+                            if (ddlAccName.SelectedValue == AttachAccID)
+                            {
+                                if (Session["Report_dtFileName"] != null)
+                                {
+                                    DataTable dt = Session["Report_dtFileName"] as DataTable;
 
-                        //            if (dt.Rows.Count > 0)
-                        //            {
-                        //                string oldFolder = Server.MapPath(attachFolderPath + "MUssVBwgcG8=" + ddlAccName.SelectedValue + "\\" + transID.ToString() + "\\");
-                        //                //string oldFolder = Server.MapPath(attachFolderPath + "MUssVBwgcG8=" + ddlAccName.SelectedValue + "\\" + sessionID + "\\");
+                                    if (dt.Rows.Count > 0)
+                                    {
+                                        //string oldFolder = Server.MapPath(attachFolderPath + "MUssVBwgcG8=" + ddlAccName.SelectedValue + "\\" + transID.ToString() + "\\");
+                                        string addFolder = Server.MapPath(attachFolderPath + "MUssVBwgcG8=" + ddlAccName.SelectedValue + "\\" + sessionID + "\\");
+                                        string folderPath = Server.MapPath(attachFolderPath);
+                                        folderPath += "MUssVBwgcG8=" + AccID + "\\" + transID.ToString() + "\\";
+                                        if (!Directory.Exists(folderPath))
+                                        {
+                                            //If Directory (Folder) does not exists. Create it.
+                                            Directory.CreateDirectory(folderPath);
+                                        }
 
-                        //                for (int i = 0; i < dt.Rows.Count; i++)
-                        //                {
-                        //                    if (!String.IsNullOrWhiteSpace(dt.Rows[i]["FileName"].ToString()))
-                        //                    {
-                        //                        string fileName = dt.Rows[i]["FileName"] as string;
+                                        //Save the File to the Directory (Folder).
+                                      
+                                        for (int i = 0; i < dt.Rows.Count; i++)
+                                        {
+                                            if (!String.IsNullOrWhiteSpace(dt.Rows[i]["FileName"].ToString()))
+                                            {
+                                                string fileName = dt.Rows[i]["FileName"] as string;
 
-                        //                        SaveTransAttachment(transID, fileName);
+                                                SaveTransAttachment(transID, fileName);
 
 
 
-                        //                        //string folderPath = Server.MapPath(attachFolderPath);
-                        //                        //folderPath += "MUssVBwgcG8=" + AccID + "\\" + transID.ToString() + "\\";
+                                                if (!Directory.Exists(folderPath))
+                                                {
+                                                    Directory.CreateDirectory(folderPath);
+                                                }
 
-                        //                        ////Check whether Directory (Folder) exists.
-                        //                        //if (!Directory.Exists(folderPath))
-                        //                        //{
-                        //                        //    //If Directory (Folder) does not exists. Create it.
-                        //                        //    Directory.CreateDirectory(folderPath);
-                        //                        //}
+                                                ////move files from sessionid folder to new saved transid folder
+                                                //if (Directory.Exists(addFolder))
+                                                //{
+                                                //    string newFile = folderPath + fileName;
+                                                //    string oldFile = addFolder + fileName;
 
-                        //                        //Save the File to the Directory (Folder).
-                        //                        //if (attFile1.HasFile)
-                        //                        //{
+                                                //    if (File.Exists(addFolder + @"\YourFile.txt"))
+                                                //    {
+                                                //        File.Move(oldFile, newFile);
+                                                //        File.Delete(oldFile);
+                                                //    }
+                                                   
+                                                //}
+                                                ////Check whether Directory (Folder) exists.
 
-                        //                        //    DataRow dr = dt2.NewRow();
-                        //                        //    dr["FileName"] = Path.GetFileName(attFile1.FileName);
-                        //                        //    dt2.Rows.Add(dr);
-
-                        //                        //    attFile1.SaveAs(folderPath + Path.GetFileName(attFile1.FileName));
-
-                        //                        //}
-                        //                        //if (attFile2.HasFile)
-                        //                        //{
-                        //                        //    DataRow dr = dt2.NewRow();
-                        //                        //    dr["FileName"] = Path.GetFileName(attFile2.FileName);
-                        //                        //    dt2.Rows.Add(dr);
-
-                        //                        //    attFile2.SaveAs(folderPath + Path.GetFileName(attFile2.FileName));
-                        //                        //}
-                        //                        //if (attFile3.HasFile)
-                        //                        //{
-                        //                        //    DataRow dr = dt2.NewRow();
-                        //                        //    dr["FileName"] = Path.GetFileName(attFile3.FileName);
-                        //                        //    dt2.Rows.Add(dr);
-
-                        //                        //    attFile3.SaveAs(folderPath + Path.GetFileName(attFile3.FileName));
-                        //                        //}
-                        //                        //if (attFile4.HasFile)
-                        //                        //{
-                        //                        //    DataRow dr = dt2.NewRow();
-                        //                        //    dr["FileName"] = Path.GetFileName(attFile4.FileName);
-                        //                        //    dt2.Rows.Add(dr);
-
-                        //                        //    attFile4.SaveAs(folderPath + Path.GetFileName(attFile4.FileName));
-                        //                        //}
-                        //                        //if (attFile5.HasFile)
-                        //                        //{
-                        //                        //    DataRow dr = dt2.NewRow();
-                        //                        //    dr["FileName"] = Path.GetFileName(attFile5.FileName);
-                        //                        //    dt2.Rows.Add(dr);
-
-                        //                        //    attFile5.SaveAs(folderPath + Path.GetFileName(attFile5.FileName));
-                        //                        //}
-                        //                    }
-                        //                }
-
-                        //                //if (Directory.Exists(odFolder))
-                        //                //{
-                        //                //    Directory.Delete(odFolder, true);
-                        //                //}
-
-                        //                Session.Clear();
-                        //            }
-                        //        }
-                        //    }
-
-                        //    GlobalUI.MessageBox("Update Successful");
-                        //    Response.Redirect("~/Account/Transaction_Report.aspx?ID=" + transID, true);
-                        //    Clear();
-                        //}
-                        //else
-                        //{
-                        //    GlobalUI.MessageBox("Update Unsuccessful");
-                        //    Clear();
-                        //}
-
+                                            }
+                                        }
+                                      //  Session.Clear();
+                                    }
+                                }
+                            }
                         GlobalUI.MessageBox("Update Successful");
                         Response.Redirect("~/Account/Transaction_Report.aspx?ID=" + transID, true);
                         Clear();
 
+
                     }
-                catch (Exception ex)
-                {
-                    GlobalUI.MessageBox("Update Unsuccessful");
-                    errBL.SaveErrLog(this.GetType().Name.Replace("_", "/"), ex.ToString());
-                }
+                    else
+                        {
+                            GlobalUI.MessageBox("Update Unsuccessful");
+                            Clear();
+                        }
+                //    }
+                //catch (Exception ex)
+                //{
+                //    GlobalUI.MessageBox("Update Unsuccessful");
+                //    errBL.SaveErrLog(this.GetType().Name.Replace("_", "/"), ex.ToString());
+                //}
             }
                
                 #endregion
@@ -735,7 +703,7 @@ namespace Account
             DataTable dt = Session["dtFileName"] as DataTable;
 
             int i = Convert.ToInt32(e.CommandArgument);
-
+            DataTable dt1 = Session["Report_dtFileName"] as DataTable;
             int count = gdvAttachFiles.Rows.Count;
 
             GridViewRow row = gdvAttachFiles.Rows[i];
@@ -875,9 +843,8 @@ namespace Account
                     }
                 }
 
-                Session["dtFileName"] = dtl;
-              
-                //  UPanel.Update();
+                Session["Report_dtFileName"] = dtl;
+                Session["dtFileName"] = dtl;//  UPanel.Update();
             }
             catch (Exception ex)
             {

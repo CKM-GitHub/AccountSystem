@@ -111,10 +111,10 @@ namespace Account.Admin
                     attFile5.SaveAs(folderPath + Path.GetFileName(attFile5.FileName));
                 }
 
-                for (int i = 1; i < dt2.Rows.Count; i++)
-                {
-                    transBL.SaveTransAttachment(transID, dt2.Rows[i]["fileName"].ToString());
-                }
+                //for (int i = 1; i < dt2.Rows.Count; i++)
+                //{
+                //    transBL.SaveTransAttachment(transID, dt2.Rows[i]["fileName"].ToString());
+                //}
 
                 panel3.Visible = true;
 
@@ -123,8 +123,8 @@ namespace Account.Admin
 
                 gdvSavedFile.DataSource = dv;
                 gdvSavedFile.DataBind();
-
-                Session.Remove("Report_dtFileName");
+                Session["Report_dtFileName"] = dt2;
+                //Session.Remove("Report_dtFileName");
                 this.ClientScript.RegisterClientScriptBlock(this.GetType(), "Close", "window.opener.__doPostBack('lnkTransAttach','');window.close()", true);
             }
             
