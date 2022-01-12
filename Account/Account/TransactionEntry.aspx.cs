@@ -591,16 +591,16 @@ namespace Account
 
         private void Clear()
         {
-            ddlTransType.ClearSelection();
-            ddlCashUnit.ClearSelection();
-            ddlStatus.ClearSelection();
-            ddlAccName.ClearSelection();
+            //ddlTransType.ClearSelection();
+            //ddlCashUnit.ClearSelection();
+            //ddlStatus.ClearSelection();
+            //ddlAccName.ClearSelection();
 
-            ddlCashUnit.Items.Insert(0, "--Select--");
-            ddlStatus.Items.Insert(0, "--Select--");
-            ddlTransType.Items.Insert(0, "--Select--");
-            ddlAccName.Items.Insert(0, "--Select--");
-            txtDate.Text = "";
+            //ddlCashUnit.Items.Insert(0, "--Select--");
+            //ddlStatus.Items.Insert(0, "--Select--");
+            //ddlTransType.Items.Insert(0, "--Select--");
+            //ddlAccName.Items.Insert(0, "--Select--");
+            //txtDate.Text = "";
             txtAmount.Text = "";
             txtRemark.Text = "";
             txtParticular.Text = "";
