@@ -111,10 +111,13 @@ namespace Account.Admin
                     attFile5.SaveAs(folderPath + Path.GetFileName(attFile5.FileName));
                 }
 
-                //for (int i = 1; i < dt2.Rows.Count; i++)
-                //{
-                //    transBL.SaveTransAttachment(transID, dt2.Rows[i]["fileName"].ToString());
-                //}
+                for (int i = 1; i < dt2.Rows.Count; i++)
+                {
+                    if(!String.IsNullOrEmpty(dt2.Rows[i]["fileName"].ToString()))
+                    {
+                        transBL.SaveTransAttachment(transID, dt2.Rows[i]["fileName"].ToString());
+                    }
+                }
 
                 panel3.Visible = true;
 

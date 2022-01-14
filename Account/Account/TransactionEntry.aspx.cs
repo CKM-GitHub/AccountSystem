@@ -23,6 +23,7 @@ namespace Account
         string accAdmin = ConfigurationManager.AppSettings["AccountAdmin"].ToString();
         string attachFolderPath = ConfigurationManager.AppSettings["attachFolderPath"].ToString();
         string accID = ""; string canEdit = "0", canDel = "0";
+        DataTable dtDelete = new DataTable();
         public string cashUnit
         {
             set
@@ -140,7 +141,8 @@ namespace Account
 
                     Session.Remove("dtFileName");
                     Session.Remove("Report_dtFileName");
-
+                    Session.Remove("DeleteFile");
+                    Session.Remove("Delete_dtFileName");
                     if (Request.QueryString["ID"] != null)
                     {
                         int accID = int.Parse(Request.QueryString["ID"]);
@@ -159,11 +161,21 @@ namespace Account
                         //BindData(dtb);
                         //Update();
                     }
+                   
 
                 }
-
-                gdvAttachFiles.DataSource = Session["dtFileName"] as DataTable;
-                gdvAttachFiles.DataBind();
+                if(Request.QueryString["ID"] != null)
+                {
+                    gdvAttachFiles.DataSource = Session["Report_dtFileName"] as DataTable;
+                    gdvAttachFiles.DataBind();
+                }
+                else
+                {
+                    gdvAttachFiles.DataSource = Session["dtFileName"] as DataTable;
+                    gdvAttachFiles.DataBind();
+                }
+                //gdvAttachFiles.DataSource = Session["dtFileName"] as DataTable;
+                // gdvAttachFiles.DataBind();
             }
             catch (Exception ex)
             {
@@ -262,9 +274,12 @@ namespace Account
                         }
                     }
                 }
-                Session["dtFileName"] = dtAttach;
+                Session["ReportAttachFileName"] = dtAttach;
                 Session["Report_dtFileName"] = dtAttach;
-              //  gdvAttachFiles.Enabled = false;
+                DataView dv = dtAttach.DefaultView;
+                dv.RowFilter = "NOT(FileName =' ')";
+                gdvAttachFiles.DataSource = dv;
+                gdvAttachFiles.DataBind();
             }
         }
         public DataTable SelectEditData(int accID)
@@ -375,100 +390,104 @@ namespace Account
                 #region update
                 if (btnSave.Text == "Update")
                 {
-                //    try
-                //{
-                        string updatedUser = this.Page.User.Identity.Name;
-                        int transID = int.Parse(Request.QueryString["ID"]);
-                        Session["AttachAccID"] = ddlAccName.SelectedValue;
-                        string AccID= ddlAccName.SelectedValue.ToString();
-                        bool transUp=  transBL.UpdateTran(int.Parse(transID.ToString()), int.Parse(ddlAccName.SelectedItem.Value), int.Parse(ddlTransType.SelectedItem.Value), txtParticular.Text, txtRemark.Text, int.Parse(ddlStatus.SelectedItem.Value), txtAmount.Text.Replace(",", ""), ddlCashUnit.SelectedItem.Text, updatedUser);
 
-                        if (transUp)
+                    string updatedUser = this.Page.User.Identity.Name;
+                    int transID = int.Parse(Request.QueryString["ID"]);
+                    Session["AttachAccID"] = ddlAccName.SelectedValue;
+                    string AccID = ddlAccName.SelectedValue.ToString();
+
+                    bool transUp = transBL.UpdateTran(int.Parse(transID.ToString()), int.Parse(ddlAccName.SelectedItem.Value), int.Parse(ddlTransType.SelectedItem.Value), txtParticular.Text, txtRemark.Text, int.Parse(ddlStatus.SelectedItem.Value), txtAmount.Text.Replace(",", ""), ddlCashUnit.SelectedItem.Text, updatedUser);
+
+                    if (transUp)
+                    {
+                        string AttachAccID = Session["AttachAccID"] == null ? "" : Session["AttachAccID"] as string;
+                        string sessionID = Session.SessionID;
+
+                        if (ddlAccName.SelectedValue == AttachAccID)
                         {
-                            string AttachAccID = Session["AttachAccID"] == null ? "" : Session["AttachAccID"] as string;
-                            string sessionID = Session.SessionID;
-
-                            if (ddlAccName.SelectedValue == AttachAccID)
+                            DataTable dt1 = Session["dtFileName"] as DataTable;
+                            string addFolder = Server.MapPath(attachFolderPath + "MUssVBwgcG8=" + ddlAccName.SelectedValue + "\\" + sessionID + "\\");
+                            string folderPath = Server.MapPath(attachFolderPath);
+                            folderPath += "MUssVBwgcG8=" + AccID + "\\" + transID.ToString() + "\\";
+                            if (Session["Report_dtFileName"] != null)
                             {
-                                if (Session["Report_dtFileName"] != null)
+                                DataTable dt = Session["Report_dtFileName"] as DataTable;
+
+                                if (dt.Rows.Count > 0)
                                 {
-                                    DataTable dt = Session["Report_dtFileName"] as DataTable;
 
-                                    if (dt.Rows.Count > 0)
+                                    if (!Directory.Exists(folderPath))
                                     {
-                                        //string oldFolder = Server.MapPath(attachFolderPath + "MUssVBwgcG8=" + ddlAccName.SelectedValue + "\\" + transID.ToString() + "\\");
-                                        string addFolder = Server.MapPath(attachFolderPath + "MUssVBwgcG8=" + ddlAccName.SelectedValue + "\\" + sessionID + "\\");
-                                        string folderPath = Server.MapPath(attachFolderPath);
-                                        folderPath += "MUssVBwgcG8=" + AccID + "\\" + transID.ToString() + "\\";
-                                        if (!Directory.Exists(folderPath))
+                                        //If Directory (Folder) does not exists. Create it.
+                                        Directory.CreateDirectory(folderPath);
+                                    }
+                                    for (int i = 0; i < dt.Rows.Count; i++)
+                                    {
+                                        if (!String.IsNullOrWhiteSpace(dt.Rows[i]["FileName"].ToString()))
                                         {
-                                            //If Directory (Folder) does not exists. Create it.
-                                            Directory.CreateDirectory(folderPath);
+                                            string fileName = dt.Rows[i]["FileName"] as string;
+                                            SaveTransAttachment(transID, fileName);
                                         }
+                                    }
+                                }
 
-                                        //Save the File to the Directory (Folder).
-                                      
-                                        for (int i = 0; i < dt.Rows.Count; i++)
+                                if (Session["Delete_dtFileName"] != null)
+                                {
+                                    DataTable dttt = Session["Delete_dtFileName"] as DataTable;
+                                    if (dttt.Rows.Count > 0)
+                                    {
+                                        for (int j = 0; j < dttt.Rows.Count; j++)
                                         {
-                                            if (!String.IsNullOrWhiteSpace(dt.Rows[i]["FileName"].ToString()))
+                                            string att = dttt.Rows[j]["AttachID"].ToString();
+                                            int attchID = Convert.ToInt32(att);
+                                            transBL.DeleteTransAttachment(attchID);
+
+
+                                            string filePath = dttt.Rows[j]["FilePath"].ToString();
+                                            string delFolderPath = dttt.Rows[j]["FolderPath"].ToString();
+                                            folderPath = Server.MapPath(delFolderPath);
+
+                                            if (Directory.Exists(filePath))
                                             {
-                                                string fileName = dt.Rows[i]["FileName"] as string;
+                                                File.Delete(Server.MapPath(filePath));
+                                            }
+                                            if (Directory.Exists(folderPath))
+                                            {
+                                                string[] files = Directory.GetFiles(folderPath);
 
-                                                SaveTransAttachment(transID, fileName);
-
-
-
-                                                if (!Directory.Exists(folderPath))
+                                                if (files.Length == 0)
                                                 {
-                                                    Directory.CreateDirectory(folderPath);
+                                                    Directory.Delete(folderPath);
                                                 }
-
-                                                ////move files from sessionid folder to new saved transid folder
-                                                //if (Directory.Exists(addFolder))
-                                                //{
-                                                //    string newFile = folderPath + fileName;
-                                                //    string oldFile = addFolder + fileName;
-
-                                                //    if (File.Exists(addFolder + @"\YourFile.txt"))
-                                                //    {
-                                                //        File.Move(oldFile, newFile);
-                                                //        File.Delete(oldFile);
-                                                //    }
-                                                   
-                                                //}
-                                                ////Check whether Directory (Folder) exists.
-
                                             }
                                         }
-                                      //  Session.Clear();
                                     }
                                 }
                             }
+                        }
                         GlobalUI.MessageBox("Update Successful");
                         Response.Redirect("~/Account/Transaction_Report.aspx?ID=" + transID, true);
                         Clear();
-
-
                     }
                     else
-                        {
-                            GlobalUI.MessageBox("Update Unsuccessful");
-                            Clear();
-                        }
-                //    }
-                //catch (Exception ex)
-                //{
-                //    GlobalUI.MessageBox("Update Unsuccessful");
-                //    errBL.SaveErrLog(this.GetType().Name.Replace("_", "/"), ex.ToString());
-                //}
-            }
-               
+                    {
+                        GlobalUI.MessageBox("Update Unsuccessful");
+                        Clear();
+                    }
+                    //    }
+                    //catch (Exception ex)
+                    //{
+                    //    GlobalUI.MessageBox("Update Unsuccessful");
+                    //    errBL.SaveErrLog(this.GetType().Name.Replace("_", "/"), ex.ToString());
+                    //}
+                }
+
                 #endregion
                 #region save
                 else
                 {
                     string createdUser = this.Page.User.Identity.Name;
-                    
+
                     int transID = SaveTransaction(int.Parse(ddlAccName.SelectedItem.Value), int.Parse(ddlStatus.SelectedValue), txtAmount.Text.Replace(",", ""), ddlCashUnit.SelectedItem.Text, int.Parse(ddlTransType.SelectedValue), txtRemark.Text, txtParticular.Text, txtDate.Text, createdUser);   //save new accs
                     if (transID != 0)
                     {
@@ -538,10 +557,10 @@ namespace Account
                         Clear();
                     }
                 }
-                
+
 
                 #endregion
-                
+
             }
             catch (Exception ex)
             {
@@ -697,50 +716,129 @@ namespace Account
 
         protected void gdvSavedFile_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            gdvAttachFiles.DataSource = Session["dtFileName"] as DataTable;
-            gdvAttachFiles.DataBind();
-
-            DataTable dt = Session["dtFileName"] as DataTable;
-
-            int i = Convert.ToInt32(e.CommandArgument);
-            DataTable dt1 = Session["Report_dtFileName"] as DataTable;
-            int count = gdvAttachFiles.Rows.Count;
-
-            GridViewRow row = gdvAttachFiles.Rows[i];
-
-            foreach (HyperLink l in row.Cells[0].Controls.OfType<HyperLink>())
+            if (Request.QueryString["ID"] != null)
             {
-                string fileName = l.Text;
-                string filePath = l.NavigateUrl;
-                string folderPath = filePath.Replace(fileName, "");
-                folderPath = Server.MapPath(folderPath);
+                int transID = Convert.ToInt32(Request.QueryString["ID"]);
+                DataTable dt = Session["Report_dtFileName"] as DataTable;
+                DataView dv = dt.DefaultView;
+                dv.RowFilter = "NOT(FileName =' ')";
 
-                if (Directory.Exists(folderPath))
+                gdvAttachFiles.DataSource = dv;
+                gdvAttachFiles.DataBind();
+
+                int i = Convert.ToInt32(e.CommandArgument);
+                int count = gdvAttachFiles.Rows.Count;
+
+                GridViewRow row = gdvAttachFiles.Rows[i];
+                int attachID = 0;
+                if (Session["Delete_dtFileName"] != null)
                 {
-                    File.Delete(Server.MapPath(filePath));
+                    dtDelete = Session["Delete_dtFileName"] as DataTable;
+                }
+               
+                if (!dtDelete.Columns.Contains("FileName"))
+                {
+                    DataColumn dc = new DataColumn("FileName", typeof(System.String));
+                    dtDelete.Columns.Add(dc);
+                }
+                if (!dtDelete.Columns.Contains("FolderPath"))
+                {
+                    DataColumn dc1 = new DataColumn("FolderPath", typeof(string));
+                    dtDelete.Columns.Add(dc1);
+                }
+                if (!dtDelete.Columns.Contains("FilePath"))
+                {
+                    DataColumn dc2 = new DataColumn("FilePath", typeof(string));
+                    dtDelete.Columns.Add(dc2);
+                }
+                if (!dtDelete.Columns.Contains("AttachID"))
+                {
+                    DataColumn dc1 = new DataColumn("AttachID", typeof(System.String));
+                    dtDelete.Columns.Add(dc1);
                 }
 
-                if (dt.Rows[i]["FileName"].ToString() == fileName)
+                foreach (HyperLink l in row.Cells[1].Controls.OfType<HyperLink>())
                 {
-                    dt.Rows[i].Delete();
-                    dt.AcceptChanges();
+                    attachID = Convert.ToInt32(l.Text);
                 }
-
-                if (Directory.Exists(folderPath))
+                foreach (HyperLink l in row.Cells[0].Controls.OfType<HyperLink>())
                 {
-                    string[] files = Directory.GetFiles(folderPath);
+                    string fileName = l.Text;
+                    string filePath = l.NavigateUrl;
+                    string folderPath = filePath.Replace(fileName, "");
 
-                    if (files.Length == 0)
+                    for(int j =i;j < dt.Rows.Count; j ++)
                     {
-                        Directory.Delete(folderPath);
+                        if (dt.Rows[j]["FileName"].ToString() == fileName)
+                        {
+
+                            DataRow dr = dtDelete.NewRow();
+                            dr["FileName"] = dt.Rows[i]["FileName"].ToString();
+                            dr["AttachID"] = dt.Rows[i]["ID"].ToString();
+                            dr["FilePath"] = dt.Rows[i]["FilePath"].ToString();
+                            dr["FolderPath"] = dt.Rows[i]["FolderPath"].ToString();
+                            dtDelete.Rows.Add(dr);
+                            dt.Rows[j].Delete();
+                            dt.AcceptChanges();
+                        }
+                    }
+                   
+                }
+               
+                gdvAttachFiles.DataSource = dt;
+                gdvAttachFiles.DataBind();
+                Session["Report_dtFileName"] = dt;
+                Session["Delete_dtFileName"] = dtDelete;
+            }
+            else
+            {
+                gdvAttachFiles.DataSource = Session["dtFileName"] as DataTable;
+                gdvAttachFiles.DataBind();
+
+                DataTable dt = Session["dtFileName"] as DataTable;
+
+
+                int i = Convert.ToInt32(e.CommandArgument);
+                int count = gdvAttachFiles.Rows.Count;
+
+                GridViewRow row = gdvAttachFiles.Rows[i];
+
+                foreach (HyperLink l in row.Cells[0].Controls.OfType<HyperLink>())
+                {
+                    string fileName = l.Text;
+                    string filePath = l.NavigateUrl;
+                    string folderPath = filePath.Replace(fileName, "");
+                    folderPath = Server.MapPath(folderPath);
+                  
+                    if (Directory.Exists(folderPath))
+                    {
+                        File.Delete(Server.MapPath(filePath));
+                    }
+
+                    if (dt.Rows[i]["FileName"].ToString() == fileName)
+                    {
+                        dt.Rows[i].Delete();
+                        dt.AcceptChanges();
+                    }
+
+                    if (Directory.Exists(folderPath))
+                    {
+                        string[] files = Directory.GetFiles(folderPath);
+
+                        if (files.Length == 0)
+                        {
+                            Directory.Delete(folderPath);
+                        }
                     }
                 }
+
+                gdvAttachFiles.DataSource = dt;
+                gdvAttachFiles.DataBind();
+
+                Session["dtFileName"] = dt;
             }
-
-            gdvAttachFiles.DataSource = dt;
-            gdvAttachFiles.DataBind();
-
-            Session["dtFileName"] = dt;
+            
+          
         }
 
         protected void btnCancel_Click(object sender, EventArgs e)
@@ -775,12 +873,6 @@ namespace Account
                     string filePath = attachFolderPath + "MUssVBwgcG8=" + AccID + "\\" + transID.ToString() + "\\";
 
                      BindModalGridView(AccID, transID, filePath);
-
-                    //   BindData(dtb);
-                  
-                
-                    //gdvAttachFiles.DataSource = dtl;
-                    //gdvAttachFiles.DataBind();
                     GetLinkButton(AccID);
                     ClientScript.RegisterStartupScript(this.GetType(), "popup_window", "<script>ShowAtta_PopUp('this')</script>");
                     
@@ -813,22 +905,54 @@ namespace Account
         {
             try
             {
-                // int trID = int.Parse(Request.QueryString["ID"]);
-                DataTable dtl = transBL.GetTransAttachs(transID);
-                DataColumn dc1 = new DataColumn("FolderPath", typeof(string));
-                dtl.Columns.Add(dc1);
+                DataTable dtl = new DataTable();
 
-                DataColumn dc2 = new DataColumn("FilePath", typeof(string));
-                dtl.Columns.Add(dc2);
+                int trID = int.Parse(Request.QueryString["ID"]);
+                DataView dv = new DataView();
+                if (Session["Report_dtFileName"] != null)
+                {
+                    DataTable dtrp = Session["Report_dtFileName"] as DataTable;
 
+                    if (dtrp.Rows.Count > 0)
+                    {
+                        dv = dtrp.DefaultView;
+                        dv.RowFilter = "NOT(FileName =' ')";
+                        dtl = dtrp;
+                    }
+                    else
+                    {
+                        dtl = transBL.GetTransAttachs(transID);
+                    }
+                }
+                else
+                {
+                    dtl = transBL.GetTransAttachs(transID);
+                }
+                if (!dtl.Columns.Contains("FolderPath"))
+                {
+                    DataColumn dc1 = new DataColumn("FolderPath", typeof(string));
+                    dtl.Columns.Add(dc1);
+                }
+                if (!dtl.Columns.Contains("FilePath"))
+                {
+                    DataColumn dc2 = new DataColumn("FilePath", typeof(string));
+                    dtl.Columns.Add(dc2);
+                }
                 if (!dtl.Columns.Contains("TransID"))
                 {
                     DataColumn dc3 = new DataColumn("TransID", typeof(string));
                     dtl.Columns.Add(dc3);
                 }
+                if (!dtl.Columns.Contains("AccID"))
+                {
+                    DataColumn dc4 = new DataColumn("AccID", typeof(string));
+                    dtl.Columns.Add(dc4);
+                }
 
-                DataColumn dc4 = new DataColumn("AccID", typeof(string));
-                dtl.Columns.Add(dc4);
+                DataRow dr = dtl.NewRow();
+                dr["TransID"] = transID;
+                dtl.Rows.InsertAt(dr, 0);
+
                 dtl.Rows[0]["AccID"] = AccID;
 
                 if (dtl.Rows.Count > 1)
@@ -837,14 +961,19 @@ namespace Account
                     {
                         if (!String.IsNullOrWhiteSpace(dtl.Rows[i]["FileName"].ToString()))
                         {
+                            string filename = dtl.Rows[i]["FileName"].ToString();
                             dtl.Rows[i]["FolderPath"] = filePath;
                             dtl.Rows[i]["FilePath"] = filePath + dtl.Rows[i]["FileName"].ToString();
                         }
                     }
                 }
 
+
+                dv = dtl.DefaultView;
+                dv.RowFilter = "NOT(FileName =' ')";
                 Session["Report_dtFileName"] = dtl;
-                Session["dtFileName"] = dtl;//  UPanel.Update();
+                gdvAttachFiles.DataSource = dv;
+                gdvAttachFiles.DataBind();
             }
             catch (Exception ex)
             {

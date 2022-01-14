@@ -65,7 +65,10 @@ namespace Account_BL
         {
             return transDL.UpdateTran(transID, accID, typID, particular, remarks, stsID, amount, unit, updUser);
         }
-
+        public void DeleteTransAttachment(int attachID)
+        {
+            trarRDL.DeleteTransAttachment(attachID);
+        }
         public DataTable GetTransAttachs(int transID)
         {
             return trarRDL.GetTransAttachs(transID);
