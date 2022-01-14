@@ -421,6 +421,14 @@ namespace Account
                                         //If Directory (Folder) does not exists. Create it.
                                         Directory.CreateDirectory(folderPath);
                                     }
+                                    if (!Directory.Exists(folderPath))
+                                    {
+                                        //If Directory (Folder) does not exists. Create it.
+                                        Directory.CreateDirectory(folderPath);
+                                    }
+
+                                    //Save the File to the Directory (Folder).
+                                   
                                     for (int i = 0; i < dt.Rows.Count; i++)
                                     {
                                         if (!String.IsNullOrWhiteSpace(dt.Rows[i]["FileName"].ToString()))

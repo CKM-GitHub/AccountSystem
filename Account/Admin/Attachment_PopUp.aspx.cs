@@ -301,12 +301,14 @@ namespace Account.Admin
                         File.Move(oldFile, newFile);
                         File.Delete(oldFile);
                     }
-
-                    if (dt.Rows[i+1]["FileName"].ToString() == fileName)
+                    for (int j = i; j < dt.Rows.Count; j++)
                     {
-                        transBL.DeleteTransAttachment(attachID);
-                        dt.Rows[i + 1].Delete();
-                        dt.AcceptChanges();
+                        if (dt.Rows[j]["FileName"].ToString() == fileName)
+                        {
+                            transBL.DeleteTransAttachment(attachID);
+                            dt.Rows[j].Delete();
+                            dt.AcceptChanges();
+                        }
                     }
 
                     //if (Directory.Exists(folderPath))
