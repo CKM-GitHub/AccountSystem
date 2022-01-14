@@ -2271,6 +2271,7 @@ namespace Account
         {
             try
             {
+                
                 LinkButton l = (LinkButton)sender;
                 int transID = Convert.ToInt32(l.CommandArgument);
 
@@ -2280,7 +2281,9 @@ namespace Account
 
                 BindModalGridView(AccID, transID, filePath);
                 GetLinkButton(AccID);
+                Session["Form"] = "Mainreport";
                 ClientScript.RegisterStartupScript(this.GetType(), "popup_window", "<script>ShowAtta_PopUp('this')</script>");
+               
             }
             catch (Exception ex)
             {

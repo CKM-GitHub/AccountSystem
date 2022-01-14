@@ -138,7 +138,7 @@ namespace Account
                     stsNameDdlBind();
                     TransTypeBind();
                     ddlCashUnitBind();
-
+                    Session.Remove("Form");
                     Session.Remove("dtFileName");
                     Session.Remove("Report_dtFileName");
                     Session.Remove("DeleteFile");
@@ -874,6 +874,7 @@ namespace Account
 
                      BindModalGridView(AccID, transID, filePath);
                     GetLinkButton(AccID);
+                   
                     ClientScript.RegisterStartupScript(this.GetType(), "popup_window", "<script>ShowAtta_PopUp('this')</script>");
                     
                 }

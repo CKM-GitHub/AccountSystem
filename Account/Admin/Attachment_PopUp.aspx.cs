@@ -113,9 +113,12 @@ namespace Account.Admin
 
                 for (int i = 1; i < dt2.Rows.Count; i++)
                 {
-                    if(!String.IsNullOrEmpty(dt2.Rows[i]["fileName"].ToString()))
+                    if(Session["Form"] != null)
                     {
-                        transBL.SaveTransAttachment(transID, dt2.Rows[i]["fileName"].ToString());
+                        if (!String.IsNullOrEmpty(dt2.Rows[i]["fileName"].ToString()))
+                        {
+                            transBL.SaveTransAttachment(transID, dt2.Rows[i]["fileName"].ToString());
+                        }
                     }
                 }
 
@@ -231,7 +234,10 @@ namespace Account.Admin
 
         protected void btnCancelModal_Click(object sender, EventArgs e)
         {
-            Session.Remove("Report_dtFileName");
+            if (Session["Form"] != null)
+            {
+                Session.Remove("Report_dtFileName");
+            }
             this.ClientScript.RegisterClientScriptBlock(this.GetType(), "Close", "window.opener.__doPostBack('lnkTransAttach','');window.close()", true);
         }
 
