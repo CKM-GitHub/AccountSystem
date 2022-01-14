@@ -305,7 +305,10 @@ namespace Account.Admin
                     {
                         if (dt.Rows[j]["FileName"].ToString() == fileName)
                         {
-                            transBL.DeleteTransAttachment(attachID);
+                            if (Session["Form"] != null)
+                            {
+                                transBL.DeleteTransAttachment(attachID);
+                            }
                             dt.Rows[j].Delete();
                             dt.AcceptChanges();
                         }
