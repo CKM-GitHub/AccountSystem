@@ -245,6 +245,7 @@ namespace Account.Admin
         {
             if (Session["Report_dtFileName"] != null)
             {
+                DataTable dtDelete = new DataTable();
                 DataTable dt = Session["Report_dtFileName"] as DataTable;
 
                 DataView dv = dt.DefaultView;
@@ -262,7 +263,7 @@ namespace Account.Admin
                 GridViewRow row = gdvSavedFile.Rows[i];
 
                 int attachID = 0;
-
+                string folderPath = "";
                 foreach (HyperLink l in row.Cells[1].Controls.OfType<HyperLink>())
                 {
                     attachID = Convert.ToInt32(l.Text);
@@ -271,35 +272,68 @@ namespace Account.Admin
                 foreach (HyperLink l in row.Cells[0].Controls.OfType<HyperLink>())
                 {
                     string fileName = l.Text;
-
-                    string crrdate = DateTime.Now.ToString("dd_MM_yyyy_hh_mm_sstt", CultureInfo.GetCultureInfo("en-US"));
-
-                    string delFileName = crrdate + "_DELETE_" + l.Text;
-                    string filePath = l.NavigateUrl;
-                    string folderPath = filePath.Replace(fileName, "");
-
-                    string delFolder = folderPath + "\\DEL\\";
-                    delFolder = Server.MapPath(delFolder);
-
-                    folderPath = Server.MapPath(folderPath);
-
-                    //if (Directory.Exists(folderPath)) //physical delete
-                    //{
-                    //    File.Delete(Server.MapPath(filePath));
-                    //}
-
-                    if (!Directory.Exists(delFolder))
-                    {                        
-                        Directory.CreateDirectory(delFolder);
-                    }
-
-                    if (Directory.Exists(folderPath))
+                    if (Session["Form"] != null)
                     {
-                        string oldFile = folderPath + fileName;
-                        string newFile = delFolder + delFileName;
+                        string crrdate = DateTime.Now.ToString("dd_MM_yyyy_hh_mm_sstt", CultureInfo.GetCultureInfo("en-US"));
 
-                        File.Move(oldFile, newFile);
-                        File.Delete(oldFile);
+                        string delFileName = crrdate + "_DELETE_" + l.Text;
+                        string filePath = l.NavigateUrl;
+                        folderPath = filePath.Replace(fileName, "");
+
+                        string delFolder = folderPath + "\\DEL\\";
+                        delFolder = Server.MapPath(delFolder);
+
+                        folderPath = Server.MapPath(folderPath);
+
+                        //if (Directory.Exists(folderPath)) //physical delete
+                        //{
+                        //    File.Delete(Server.MapPath(filePath));
+                        //}
+
+                        if (!Directory.Exists(delFolder))
+                        {
+                            Directory.CreateDirectory(delFolder);
+                        }
+
+                        if (Directory.Exists(folderPath))
+                        {
+                            string oldFile = folderPath + fileName;
+                            string newFile = delFolder + delFileName;
+
+
+                            File.Move(oldFile, newFile);
+                            File.Delete(oldFile);
+                        }
+                    }
+                    else
+                    {
+
+                        if (Session["Delete_dtFileName"] != null)
+                        {
+                            dtDelete = Session["Delete_dtFileName"] as DataTable;
+                        }
+                        if (!dtDelete.Columns.Contains("FileName"))
+                        {
+                            DataColumn dc = new DataColumn("FileName", typeof(System.String));
+                            dtDelete.Columns.Add(dc);
+                        }
+                        if (!dtDelete.Columns.Contains("FolderPath"))
+                        {
+                            DataColumn dc1 = new DataColumn("FolderPath", typeof(string));
+                            dtDelete.Columns.Add(dc1);
+                        }
+                        if (!dtDelete.Columns.Contains("FilePath"))
+                        {
+                            DataColumn dc2 = new DataColumn("FilePath", typeof(string));
+                            dtDelete.Columns.Add(dc2);
+                        }
+                        if (!dtDelete.Columns.Contains("AttachID"))
+                        {
+                            DataColumn dc1 = new DataColumn("AttachID", typeof(System.String));
+                            dtDelete.Columns.Add(dc1);
+                        }
+
+
                     }
                     for (int j = i; j < dt.Rows.Count; j++)
                     {
@@ -308,6 +342,16 @@ namespace Account.Admin
                             if (Session["Form"] != null)
                             {
                                 transBL.DeleteTransAttachment(attachID);
+                            }
+                            else
+                            {
+                                DataRow dr = dtDelete.NewRow();
+                                dr["FileName"] = dt.Rows[j]["FileName"].ToString();
+                                dr["AttachID"] = dt.Rows[j]["ID"].ToString();
+                                dr["FilePath"] = dt.Rows[j]["FilePath"].ToString();
+                                dr["FolderPath"] = dt.Rows[j]["FolderPath"].ToString();
+                                dtDelete.Rows.Add(dr);
+                                Session["Delete_dtFileName"] = dtDelete;
                             }
                             dt.Rows[j].Delete();
                             dt.AcceptChanges();
@@ -332,6 +376,7 @@ namespace Account.Admin
                 gdvSavedFile.DataBind();
 
                 Session["Report_dtFileName"] = dt;
+
             }
             else
             {

@@ -421,14 +421,6 @@ namespace Account
                                         //If Directory (Folder) does not exists. Create it.
                                         Directory.CreateDirectory(folderPath);
                                     }
-                                    if (!Directory.Exists(folderPath))
-                                    {
-                                        //If Directory (Folder) does not exists. Create it.
-                                        Directory.CreateDirectory(folderPath);
-                                    }
-
-                                    //Save the File to the Directory (Folder).
-                                   
                                     for (int i = 0; i < dt.Rows.Count; i++)
                                     {
                                         if (!String.IsNullOrWhiteSpace(dt.Rows[i]["FileName"].ToString()))
@@ -442,31 +434,35 @@ namespace Account
                                 if (Session["Delete_dtFileName"] != null)
                                 {
                                     DataTable dttt = Session["Delete_dtFileName"] as DataTable;
+                                    string crrdate = DateTime.Now.ToString("dd_MM_yyyy_hh_mm_sstt", CultureInfo.GetCultureInfo("en-US"));
                                     if (dttt.Rows.Count > 0)
                                     {
+
+
                                         for (int j = 0; j < dttt.Rows.Count; j++)
                                         {
                                             string att = dttt.Rows[j]["AttachID"].ToString();
-                                            int attchID = Convert.ToInt32(att);
-                                            transBL.DeleteTransAttachment(attchID);
-
-
                                             string filePath = dttt.Rows[j]["FilePath"].ToString();
-                                            string delFolderPath = dttt.Rows[j]["FolderPath"].ToString();
-                                            folderPath = Server.MapPath(delFolderPath);
+                                            int attchID = Convert.ToInt32(att);
+                                            string filename = dttt.Rows[j]["FileName"].ToString();
+                                            string delFileName = crrdate + "_DELETE_" + filename;
 
-                                            if (Directory.Exists(filePath))
+                                            folderPath = filePath.Replace(filename, "");
+                                            string delFolder = folderPath + "\\DEL\\";
+                                            delFolder = Server.MapPath(delFolder);
+                                            folderPath = Server.MapPath(folderPath);
+                                            transBL.DeleteTransAttachment(attchID);
+                                            if (!Directory.Exists(delFolder))
                                             {
-                                                File.Delete(Server.MapPath(filePath));
+                                                Directory.CreateDirectory(delFolder);
                                             }
                                             if (Directory.Exists(folderPath))
                                             {
-                                                string[] files = Directory.GetFiles(folderPath);
+                                                string oldFile = folderPath + filename;
+                                                string newFile = delFolder + delFileName;
 
-                                                if (files.Length == 0)
-                                                {
-                                                    Directory.Delete(folderPath);
-                                                }
+                                                File.Move(oldFile, newFile);
+                                                File.Delete(oldFile);
                                             }
                                         }
                                     }
@@ -743,7 +739,6 @@ namespace Account
                 {
                     dtDelete = Session["Delete_dtFileName"] as DataTable;
                 }
-               
                 if (!dtDelete.Columns.Contains("FileName"))
                 {
                     DataColumn dc = new DataColumn("FileName", typeof(System.String));
@@ -764,7 +759,6 @@ namespace Account
                     DataColumn dc1 = new DataColumn("AttachID", typeof(System.String));
                     dtDelete.Columns.Add(dc1);
                 }
-
                 foreach (HyperLink l in row.Cells[1].Controls.OfType<HyperLink>())
                 {
                     attachID = Convert.ToInt32(l.Text);
@@ -779,7 +773,6 @@ namespace Account
                     {
                         if (dt.Rows[j]["FileName"].ToString() == fileName)
                         {
-
                             DataRow dr = dtDelete.NewRow();
                             dr["FileName"] = dt.Rows[i]["FileName"].ToString();
                             dr["AttachID"] = dt.Rows[i]["ID"].ToString();
@@ -787,12 +780,10 @@ namespace Account
                             dr["FolderPath"] = dt.Rows[i]["FolderPath"].ToString();
                             dtDelete.Rows.Add(dr);
                             dt.Rows[j].Delete();
-                            dt.AcceptChanges();
+                           dt.AcceptChanges();
                         }
                     }
-                   
                 }
-               
                 gdvAttachFiles.DataSource = dt;
                 gdvAttachFiles.DataBind();
                 Session["Report_dtFileName"] = dt;
@@ -839,7 +830,6 @@ namespace Account
                         }
                     }
                 }
-
                 gdvAttachFiles.DataSource = dt;
                 gdvAttachFiles.DataBind();
 
