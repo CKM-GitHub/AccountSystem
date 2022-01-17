@@ -21,6 +21,29 @@ namespace Account.Admin
         {
             if (!IsPostBack)
             {
+                if (Session["Form"] != null)
+                {
+                    gdvSavedFile.Enabled = false;
+                    panel2.Enabled = false;
+                    attFile1.Enabled = false;
+                    attFile2.Enabled = false;
+                    attFile3.Enabled = false;
+                    attFile4.Enabled = false;
+                    attFile5.Enabled = false;
+                    btnSaveFiles.Enabled = false;
+                }
+                else
+                {
+                    gdvSavedFile.Enabled = true;
+                    panel2.Enabled = true;
+                    attFile1.Enabled = true;
+                    attFile2.Enabled = true;
+                    attFile3.Enabled = true;
+                    attFile4.Enabled = true;
+                    attFile5.Enabled = true;
+                    btnSaveFiles.Enabled = true;
+                }
+
                 if (Session["dtFileName"] != null)
                 {
                     panel3.Visible = true;
@@ -42,6 +65,7 @@ namespace Account.Admin
                         gdvSavedFile.DataBind();
                     }
                 }
+
             }
         }
 
@@ -74,9 +98,9 @@ namespace Account.Admin
                     DataRow dr = dt2.NewRow();
                     dr["FileName"] = Path.GetFileName(attFile1.FileName);
                     dt2.Rows.Add(dr);
-
-                    attFile1.SaveAs(folderPath + Path.GetFileName(attFile1.FileName));
-
+                   
+                        attFile1.SaveAs(folderPath + Path.GetFileName(attFile1.FileName));
+                   
                 }
                 if (attFile2.HasFile)
                 {
