@@ -313,8 +313,9 @@ namespace Account
                         txtToDate.Text = Session["DateTUpdate"].ToString();
                         pnlLast.Visible = true;
                         gdvTransReportSnd.Visible = false;
-                        SearchReport(rdOpt.SelectedValue, gdvTransReport, int.Parse(ddlAccName.SelectedValue), int.Parse(ddlTransType.SelectedValue),
-                        int.Parse(ddlStatus.SelectedValue), ddlCashUnit.SelectedItem.Text, txtFromDate.Text, txtToDate.Text);
+                        SearchMethod();
+                        //SearchReport(rdOpt.SelectedValue, gdvTransReport, int.Parse(ddlAccName.SelectedValue), int.Parse(ddlTransType.SelectedValue),
+                        //int.Parse(ddlStatus.SelectedValue), ddlCashUnit.SelectedItem.Text, txtFromDate.Text, txtToDate.Text);
                         search_no = 1;
                         Session["AccUpdate"] = "";
                         Session["TypeUpdate"] = "";
@@ -411,8 +412,8 @@ namespace Account
                         if (search_no != 0)
                         {
 
-
-                            SearchReport(rdOpt.SelectedValue, gdvTransReport, int.Parse(ddlAccName.SelectedValue), int.Parse(ddlTransType.SelectedValue), int.Parse(ddlStatus.SelectedValue), ddlCashUnit.SelectedItem.Text, txtFromDate.Text, txtToDate.Text);
+                            SearchMethod();
+                            //SearchReport(rdOpt.SelectedValue, gdvTransReport, int.Parse(ddlAccName.SelectedValue), int.Parse(ddlTransType.SelectedValue), int.Parse(ddlStatus.SelectedValue), ddlCashUnit.SelectedItem.Text, txtFromDate.Text, txtToDate.Text);
 
                         }// SearchMethod();
                           //  UPanel.Update();
