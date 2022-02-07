@@ -430,39 +430,34 @@ namespace Account
                                         }
                                     }
                                 }
-
                                 if (Session["Delete_dtFileName"] != null)
                                 {
                                     DataTable dttt = Session["Delete_dtFileName"] as DataTable;
                                     string crrdate = DateTime.Now.ToString("dd_MM_yyyy_hh_mm_sstt", CultureInfo.GetCultureInfo("en-US"));
                                     if (dttt.Rows.Count > 0)
                                     {
-
-
                                         for (int j = 0; j < dttt.Rows.Count; j++)
                                         {
                                             string att = dttt.Rows[j]["AttachID"].ToString();
-                                            string filePath = dttt.Rows[j]["FilePath"].ToString();
                                             int attchID = Convert.ToInt32(att);
                                             string filename = dttt.Rows[j]["FileName"].ToString();
-                                            string delFileName = crrdate + "_DELETE_" + filename;
-
-                                            folderPath = filePath.Replace(filename, "");
-                                            string delFolder = folderPath + "\\DEL\\";
-                                            delFolder = Server.MapPath(delFolder);
-                                            folderPath = Server.MapPath(folderPath);
-                                            transBL.DeleteTransAttachment(attchID);
-                                            if (!Directory.Exists(delFolder))
+                                            if (!String.IsNullOrWhiteSpace(filename))
                                             {
-                                                Directory.CreateDirectory(delFolder);
-                                            }
-                                            if (Directory.Exists(folderPath))
-                                            {
-                                                string oldFile = folderPath + filename;
-                                                string newFile = delFolder + delFileName;
+                                                string delFileName = crrdate + "_DELETE_" + filename;
+                                                string delFolder = folderPath + "\\DEL\\";
+                                                transBL.DeleteTransAttachment(attchID);
+                                                if (!Directory.Exists(delFolder))
+                                                {
+                                                    Directory.CreateDirectory(delFolder);
+                                                }
+                                                if (Directory.Exists(folderPath))
+                                                {
+                                                    string oldFile = folderPath + filename;
+                                                    string newFile = delFolder + delFileName;
 
-                                                File.Move(oldFile, newFile);
-                                                File.Delete(oldFile);
+                                                    File.Move(oldFile, newFile);
+                                                    File.Delete(oldFile);
+                                                }
                                             }
                                         }
                                     }
@@ -478,12 +473,6 @@ namespace Account
                         GlobalUI.MessageBox("Update Unsuccessful");
                         Clear();
                     }
-                    //    }
-                    //catch (Exception ex)
-                    //{
-                    //    GlobalUI.MessageBox("Update Unsuccessful");
-                    //    errBL.SaveErrLog(this.GetType().Name.Replace("_", "/"), ex.ToString());
-                    //}
                 }
 
                 #endregion
@@ -561,8 +550,6 @@ namespace Account
                         Clear();
                     }
                 }
-
-
                 #endregion
 
             }
