@@ -805,7 +805,7 @@ namespace Account
 
                     foreach (LinkButton button in e.Row.Cells[18].Controls.OfType<LinkButton>())
                     {
-                        if (button.CommandName == "Delete")
+                        if (button.CommandName == "Delete_Trans")
                         {
                             button.Attributes["onclick"] = "if(!confirm('Are you sure you want to delete?')){ return false; };";
                         }
@@ -2865,7 +2865,7 @@ namespace Account
                     Response.Redirect("~/Account/TransactionEntry.aspx?ID=" + hdfID.Value, true);
                    
                 }
-                if (e.CommandName == "Delete")
+                if (e.CommandName == "Delete_Trans")
                 {                  
                     DeleteDataRow(index);
                       

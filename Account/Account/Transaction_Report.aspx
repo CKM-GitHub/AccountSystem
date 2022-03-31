@@ -606,7 +606,7 @@
                         </asp:TemplateField>
                         <asp:TemplateField>
                             <ItemTemplate>
-                                <asp:LinkButton ID="lnkdelete" runat="server" CssClass="btn-sm btn-danger" CommandName="Delete" CommandArgument="<%# Container.DataItemIndex %>" Text="<i class='glyphicon glyphicon-trash'></i>"></asp:LinkButton>
+                                <asp:LinkButton ID="lnkdelete" runat="server" CssClass="btn-sm btn-danger" CommandName="Delete_Trans" CommandArgument="<%# Container.DataItemIndex %>" Text="<i class='glyphicon glyphicon-trash'></i>"></asp:LinkButton>
                             </ItemTemplate>
                         </asp:TemplateField>
                        

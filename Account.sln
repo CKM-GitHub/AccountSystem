@@ -46,23 +46,4 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CEBEC9DB-D878-40B9-ABFF-14143465F5AD}
 	EndGlobalSection
-	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 6
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Account\\Account.csproj
-		SccLocalPath1 = .
-		SccProjectFilePathRelativizedFromConnection1 = Account\\
-		SccProjectUniqueName2 = Account_BL\\Account_BL.csproj
-		SccLocalPath2 = .
-		SccProjectFilePathRelativizedFromConnection2 = Account_BL\\
-		SccProjectUniqueName3 = Account_DL\\Account_DL.csproj
-		SccLocalPath3 = .
-		SccProjectFilePathRelativizedFromConnection3 = Account_DL\\
-		SccProjectUniqueName4 = DB_Backup\\DB_Backup_Console.csproj
-		SccLocalPath4 = .
-		SccProjectFilePathRelativizedFromConnection4 = DB_Backup\\
-		SccProjectUniqueName5 = OpeningBalance_Console\\OpeningBalance_Console.csproj
-		SccLocalPath5 = .
-		SccProjectFilePathRelativizedFromConnection5 = OpeningBalance_Console\\
-	EndGlobalSection
 EndGlobal
