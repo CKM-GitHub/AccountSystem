@@ -247,7 +247,7 @@ namespace Account_DL
             }
         }
 
-        public bool UpdateTran(int transID, int accID, int typID, string particular, string remarks, int stsID, string amount, string unit, string updUser)
+        public bool UpdateTran(int transID, int accID, int typID,string date, string particular, string remarks, int stsID, string amount, string unit, string updUser)
         {
             DataTable dt = new DataTable();
             SqlConnection con = new SqlConnection(connection);
@@ -259,6 +259,7 @@ namespace Account_DL
             cmd.Parameters.AddWithValue("@transID", transID);
             cmd.Parameters.AddWithValue("@accID", accID);
             cmd.Parameters.AddWithValue("@typID", typID);
+            cmd.Parameters.AddWithValue("@date", date);
             cmd.Parameters.AddWithValue("@particular", particular);
             cmd.Parameters.AddWithValue("@remarks", remarks);
             cmd.Parameters.AddWithValue("@stsID", stsID);

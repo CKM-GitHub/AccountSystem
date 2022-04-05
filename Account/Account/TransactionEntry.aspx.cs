@@ -152,9 +152,9 @@ namespace Account
                         {
                             btnSave.Text = "Update";
                             BindData(dtb);
-                            txtDate.Enabled = false;
+                           // txtDate.Enabled = false;
                           //  btnAddAttach.Enabled = false;
-                            ddlAccName.Enabled = false;
+                           // ddlAccName.Enabled = false;
                             
                         }
 
@@ -396,7 +396,8 @@ namespace Account
                     Session["AttachAccID"] = ddlAccName.SelectedValue;
                     string AccID = ddlAccName.SelectedValue.ToString();
 
-                    bool transUp = transBL.UpdateTran(int.Parse(transID.ToString()), int.Parse(ddlAccName.SelectedItem.Value), int.Parse(ddlTransType.SelectedItem.Value), txtParticular.Text, txtRemark.Text, int.Parse(ddlStatus.SelectedItem.Value), txtAmount.Text.Replace(",", ""), ddlCashUnit.SelectedItem.Text, updatedUser);
+                    bool transUp = transBL.UpdateTran(int.Parse(transID.ToString()), int.Parse(ddlAccName.SelectedItem.Value),
+                        int.Parse(ddlTransType.SelectedItem.Value),txtDate.Text, txtParticular.Text, txtRemark.Text, int.Parse(ddlStatus.SelectedItem.Value), txtAmount.Text.Replace(",", ""), ddlCashUnit.SelectedItem.Text, updatedUser);
 
                     if (transUp)
                     {
