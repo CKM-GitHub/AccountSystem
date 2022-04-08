@@ -1972,13 +1972,17 @@ namespace Account
                                 DateTime date1 = Convert.ToDateTime(dtClone.Rows[i]["Date"].ToString());
                                 string lstDate = date1.ToString("dd/MM/yyyy hh:mm tt", CultureInfo.GetCultureInfo("en-US"));
 
-                                dt2 = transBL.GetLastOBL(int.Parse(dtClone.Rows[i]["TransID"].ToString()), lstAccID, lstDate, dtClone.Rows[i]["Created_Date"].ToString());
-                                if (dt2.Rows.Count != 0 || dt2 != null)
-                                {
-                                    lstResultAmtUSD = Convert.ToDecimal(dt2.Rows[0]["ResultAmtUSD"].ToString());
-                                    lstResultAmtKs = Convert.ToDecimal(dt2.Rows[0]["ResultAmtKs"].ToString());
-                                    lstResultAmtYen = Convert.ToDecimal(dt2.Rows[0]["ResultAmtYen"].ToString());
-                                }
+                                //dt2 = transBL.GetLastOBL(int.Parse(dtClone.Rows[i]["TransID"].ToString()), lstAccID, lstDate, dtClone.Rows[i]["Created_Date"].ToString());
+                                //if (dt2.Rows.Count != 0 || dt2 != null)
+                                //{
+                                //    lstResultAmtUSD = Convert.ToDecimal(dt2.Rows[0]["ResultAmtUSD"].ToString());
+                                //    lstResultAmtKs = Convert.ToDecimal(dt2.Rows[0]["ResultAmtKs"].ToString());
+                                //    lstResultAmtYen = Convert.ToDecimal(dt2.Rows[0]["ResultAmtYen"].ToString());
+                                //}
+
+                                lstResultAmtUSD = Convert.ToDecimal(dtClone.Rows[i - 1]["OpeningBalanceUSD"].ToString());
+                                lstResultAmtKs = Convert.ToDecimal(dtClone.Rows[i - 1]["OpeningBalanceKs"].ToString());
+                                lstResultAmtYen = Convert.ToDecimal(dtClone.Rows[i - 1]["OpeningBalanceYen"].ToString());
                             }
 
                             //for binding totals in footer 
