@@ -2459,18 +2459,18 @@ namespace Account
                             ws.Cell("H" + (i + 3)).Value = dtClone.Rows[i]["IncomeUSD"].ToString();
                             ws.Cell("I" + (i + 3)).Value = dtClone.Rows[i]["IncomeKs"].ToString();
                             ws.Cell("J" + (i + 3)).Value = dtClone.Rows[i]["IncomeYen"].ToString();
-                            if (dtClone.Rows[i]["Remarks"].ToString() != "YwBsAG8ATwBCAEwA" || dtClone.Rows[i]["Particular"].ToString() != "Closing Balance from:")
-                            {
-                            ws.Cell("K" + (i + 3)).Value = dtClone.Rows[i]["ResultAmtUSD"].ToString();
-                            ws.Cell("L" + (i + 3)).Value = dtClone.Rows[i]["ResultAmtKs"].ToString();
-                            ws.Cell("M" + (i + 3)).Value = dtClone.Rows[i]["ResultAmtYen"].ToString();
-                            }
-                            else
-                            {
+                            //if (dtClone.Rows[i]["Remarks"].ToString() != "YwBsAG8ATwBCAEwA" || dtClone.Rows[i]["Particular"].ToString() != "Closing Balance from:")
+                            //{
+                            //ws.Cell("K" + (i + 3)).Value = dtClone.Rows[i]["ResultAmtUSD"].ToString();
+                            //ws.Cell("L" + (i + 3)).Value = dtClone.Rows[i]["ResultAmtKs"].ToString();
+                            //ws.Cell("M" + (i + 3)).Value = dtClone.Rows[i]["ResultAmtYen"].ToString();
+                            //}
+                            //else
+                            //{
                                 ws.Cell("K" + (i + 3)).Value = dtClone.Rows[i]["OpeningBalanceUSD"].ToString();
                                 ws.Cell("L" + (i + 3)).Value = dtClone.Rows[i]["OpeningBalanceKs"].ToString();
                                 ws.Cell("M" + (i + 3)).Value = dtClone.Rows[i]["OpeningBalanceYen"].ToString();
-                            }
+                           // }
                             if (dtClone.Rows[i]["Remarks"].ToString() != "YwBsAG8ATwBCAEwA")
                             {
                                 ws.Cell("N" + (i + 3)).Value = dtClone.Rows[i]["Remarks"].ToString();
@@ -2800,7 +2800,8 @@ namespace Account
                     break;
             }
 
-            DataTable dtClone = dt.Clone();
+               DataTable dtClone = dt.Clone();
+           
 
             if (dt.Rows.Count > 0 && this.Page.User.Identity.Name != accAdmin && dt != null)
             {
