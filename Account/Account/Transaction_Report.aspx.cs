@@ -1903,6 +1903,9 @@ namespace Account
                 string tempAccID1 = "", tempAccID2 = "";
 
                 if (opt == "1")
+
+
+
                 {
                     if (dtClone.Rows.Count > 0 && dtClone != null)
                     {
@@ -1958,7 +1961,7 @@ namespace Account
                                 }
                             }
                         }
-
+                      
                         for (int i = 0; i < dtClone.Rows.Count; i++)
                         {
                             DataTable dt2 = new DataTable();
@@ -1966,8 +1969,8 @@ namespace Account
                             int lstAccID = int.Parse(dtClone.Rows[i]["ACCID"].ToString());
 
                             decimal lstResultAmtUSD = 0, lstResultAmtKs = 0, lstResultAmtYen = 0;
-
-                            if (!String.IsNullOrWhiteSpace(dtClone.Rows[i]["Date"].ToString()))
+                           
+                            if (i != 0)
                             {
                                 DateTime date1 = Convert.ToDateTime(dtClone.Rows[i]["Date"].ToString());
                                 string lstDate = date1.ToString("dd/MM/yyyy hh:mm tt", CultureInfo.GetCultureInfo("en-US"));
@@ -1975,15 +1978,30 @@ namespace Account
                                 //dt2 = transBL.GetLastOBL(int.Parse(dtClone.Rows[i]["TransID"].ToString()), lstAccID, lstDate, dtClone.Rows[i]["Created_Date"].ToString());
                                 //if (dt2.Rows.Count != 0 || dt2 != null)
                                 //{
-                                //    lstResultAmtUSD = Convert.ToDecimal(dt2.Rows[0]["ResultAmtUSD"].ToString());
-                                //    lstResultAmtKs = Convert.ToDecimal(dt2.Rows[0]["ResultAmtKs"].ToString());
-                                //    lstResultAmtYen = Convert.ToDecimal(dt2.Rows[0]["ResultAmtYen"].ToString());
-                                //}
-
                                 lstResultAmtUSD = Convert.ToDecimal(dtClone.Rows[i - 1]["OpeningBalanceUSD"].ToString());
                                 lstResultAmtKs = Convert.ToDecimal(dtClone.Rows[i - 1]["OpeningBalanceKs"].ToString());
                                 lstResultAmtYen = Convert.ToDecimal(dtClone.Rows[i - 1]["OpeningBalanceYen"].ToString());
+                                //}
+
+
                             }
+                            //if (!String.IsNullOrWhiteSpace(dtClone.Rows[i]["Date"].ToString()))
+                            //{
+                            //    DateTime date1 = Convert.ToDateTime(dtClone.Rows[i]["Date"].ToString());
+                            //    string lstDate = date1.ToString("dd/MM/yyyy hh:mm tt", CultureInfo.GetCultureInfo("en-US"));
+
+                            //    //dt2 = transBL.GetLastOBL(int.Parse(dtClone.Rows[i]["TransID"].ToString()), lstAccID, lstDate, dtClone.Rows[i]["Created_Date"].ToString());
+                            //    //if (dt2.Rows.Count != 0 || dt2 != null)
+                            //    //{
+                            //    //    lstResultAmtUSD = Convert.ToDecimal(dt2.Rows[0]["ResultAmtUSD"].ToString());
+                            //    //    lstResultAmtKs = Convert.ToDecimal(dt2.Rows[0]["ResultAmtKs"].ToString());
+                            //    //    lstResultAmtYen = Convert.ToDecimal(dt2.Rows[0]["ResultAmtYen"].ToString());
+                            //    //}
+
+                            //    lstResultAmtUSD = Convert.ToDecimal(dtClone.Rows[i - 1]["OpeningBalanceUSD"].ToString());
+                            //    lstResultAmtKs = Convert.ToDecimal(dtClone.Rows[i - 1]["OpeningBalanceKs"].ToString());
+                            //    lstResultAmtYen = Convert.ToDecimal(dtClone.Rows[i - 1]["OpeningBalanceYen"].ToString());
+                            //}
 
                             //for binding totals in footer 
                             totalExpenseUSD += dtClone.Rows[i]["ExpenseUSD"] != null && !String.IsNullOrWhiteSpace(dtClone.Rows[i]["ExpenseUSD"].ToString()) ? Convert.ToDecimal(dtClone.Rows[i]["ExpenseUSD"].ToString()) : 0;
