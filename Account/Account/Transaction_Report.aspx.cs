@@ -1896,7 +1896,6 @@ namespace Account
             try
             {
                 gdv.Visible = true;
-                decimal lstResultAmtUSD = 0, lstResultAmtKs = 0, lstResultAmtYen = 0;
                 decimal totalExpenseUSD = 0, totalExpenseKs = 0,totalExpenseYen = 0, totalIncomeUSD = 0, totalIncomeKs = 0 ,totalIncomeYen=0;
                 decimal totalOBLUSD = 0, totalOBLKs = 0, totalOBLYen = 0;
 
@@ -1968,7 +1967,7 @@ namespace Account
 
                             int lstAccID = int.Parse(dtClone.Rows[i]["ACCID"].ToString());
 
-                            // decimal lstResultAmtUSD = 0, lstResultAmtKs = 0, lstResultAmtYen = 0;
+                             decimal lstResultAmtUSD = 0, lstResultAmtKs = 0, lstResultAmtYen = 0;
 
                             if (i != 0)
                             {
@@ -1977,9 +1976,7 @@ namespace Account
                                 lstResultAmtUSD = Convert.ToDecimal(dtClone.Rows[i - 1]["OpeningBalanceUSD"].ToString());
                                 lstResultAmtKs = Convert.ToDecimal(dtClone.Rows[i - 1]["OpeningBalanceKs"].ToString());
                                 lstResultAmtYen = Convert.ToDecimal(dtClone.Rows[i - 1]["OpeningBalanceYen"].ToString());
-                                //lstResultAmtUSD = Convert.ToDecimal(dtClone.Rows[i]["ResultAmtUSD"].ToString());
-                                //lstResultAmtKs = Convert.ToDecimal(dtClone.Rows[i]["ResultAmtKs"].ToString());
-                                //lstResultAmtYen = Convert.ToDecimal(dtClone.Rows[i]["ResultAmtYen"].ToString());
+                             
                             }
                             //if (!String.IsNullOrWhiteSpace(dtClone.Rows[i]["Date"].ToString()))
                             //{
@@ -2031,9 +2028,6 @@ namespace Account
                             dtClone.Rows[i]["OpeningBalanceUSD"] = lstResultAmtUSD + incUSD - expUSD;
                             dtClone.Rows[i]["OpeningBalanceKs"] = lstResultAmtKs + incKs - expKs;
                             dtClone.Rows[i]["OpeningBalanceYen"] = lstResultAmtYen + incYen - expYen;
-                            //dtClone.Rows[i]["OpeningBalanceUSD"] = lstResultAmtUSD ;
-                            //dtClone.Rows[i]["OpeningBalanceKs"] = lstResultAmtKs  ;
-                            //dtClone.Rows[i]["OpeningBalanceYen"] = lstResultAmtYen;
 
                         }
 
