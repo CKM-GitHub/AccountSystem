@@ -259,7 +259,6 @@ namespace Account_DL
             cmd.Parameters.AddWithValue("@transID", transID);
             cmd.Parameters.AddWithValue("@accID", accID);
             cmd.Parameters.AddWithValue("@typID", typID);
-            cmd.Parameters.AddWithValue("@date", date);
             cmd.Parameters.AddWithValue("@particular", particular);
             cmd.Parameters.AddWithValue("@remarks", remarks);
             cmd.Parameters.AddWithValue("@stsID", stsID);
