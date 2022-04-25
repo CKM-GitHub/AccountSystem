@@ -116,6 +116,7 @@ namespace Account
             }
         }
         protected void Page_Load(object sender, EventArgs e)
+
         {
             try
             {
@@ -375,7 +376,7 @@ namespace Account
                 ddlAccName.DataBind();
                 ddlAccName.ClearSelection();
                 ddlAccName.Items.Insert(0, "--Select--");
-                Session["AttachAccID"] = ddlAccName.SelectedValue;
+              //  Session["AttachAccID"] = ddlAccName.SelectedValue;
             }
             catch (Exception ex)
             {
@@ -393,7 +394,7 @@ namespace Account
 
                     string updatedUser = this.Page.User.Identity.Name;
                     int transID = int.Parse(Request.QueryString["ID"]);
-                    Session["AttachAccID"] = ddlAccName.SelectedValue;
+                    //Session["AttachAccID"] = ddlAccName.SelectedValue;
                     string AccID = ddlAccName.SelectedValue.ToString();
 
                     bool transUp = transBL.UpdateTran(int.Parse(transID.ToString()), int.Parse(ddlAccName.SelectedItem.Value),
@@ -401,11 +402,11 @@ namespace Account
 
                     if (transUp)
                     {
-                        string AttachAccID = Session["AttachAccID"] == null ? "" : Session["AttachAccID"] as string;
+                        //string AttachAccID = Session["AttachAccID"] == null ? "" : Session["AttachAccID"] as string;
                         string sessionID = Session.SessionID;
 
-                        if (ddlAccName.SelectedValue == AttachAccID)
-                        {
+                        //if (ddlAccName.SelectedValue == AttachAccID)
+                        //{
                             DataTable dt1 = Session["dtFileName"] as DataTable;
                             string addFolder = Server.MapPath(attachFolderPath + "MUssVBwgcG8=" + ddlAccName.SelectedValue + "\\" + sessionID + "\\");
                             string folderPath = Server.MapPath(attachFolderPath);
@@ -464,10 +465,11 @@ namespace Account
                                     }
                                 }
                             }
-                        }
+                        //}
                         GlobalUI.MessageBox("Update Successful");
-                        Response.Redirect("~/Account/Transaction_Report.aspx?ID=" + transID, true);
                         Clear();
+                        Response.Redirect("~/Account/Transaction_Report.aspx?ID=" + transID, true);
+
                     }
                     else
                     {
@@ -489,8 +491,8 @@ namespace Account
                         string AttachAccID = Session["AttachAccID"] == null ? "" : Session["AttachAccID"] as string;
                         string sessionID = Session.SessionID;
 
-                        if (ddlAccName.SelectedValue == AttachAccID)
-                        {
+                        //if (ddlAccName.SelectedValue == AttachAccID)
+                        //{
                             if (Session["dtFileName"] != null)
                             {
                                 DataTable dt = Session["dtFileName"] as DataTable;
@@ -533,7 +535,7 @@ namespace Account
                                     Session.Clear();
                                 }
                             }
-                        }
+                        //}
 
                         String url = Request.ApplicationPath;
 
@@ -543,6 +545,7 @@ namespace Account
 
                         //TransRpt_Update();
                         ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Save Successful');", true);
+                        Session["dtFileName"] = null;
                         Clear();
                     }
                     else
@@ -836,7 +839,9 @@ namespace Account
                int  accID = int.Parse(Request.QueryString["ID"]);
                 Response.Redirect("~/Account/Transaction_Report.aspx?ID=" + accID, true);
             }
-                   
+            {
+                Session["dtFileName"] = null;
+            }
         }
 
         protected void btnAddAttach_Click(object sender, EventArgs e)
